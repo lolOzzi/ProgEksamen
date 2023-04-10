@@ -3,6 +3,7 @@ import { createServerAction$ } from "solid-start/server";
 import { logout } from "~/db/session";
 import { useUser } from "../db/useUser";
 
+
 export function routeData() {
   return useUser();
 }

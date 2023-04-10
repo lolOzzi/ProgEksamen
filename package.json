@@ -7,14 +7,18 @@
   },
   "type": "module",
   "devDependencies": {
+    "@types/node": "^18.15.11",
     "solid-start-node": "^0.2.19",
     "typescript": "^4.9.4",
     "vite": "^4.1.4"
   },
   "dependencies": {
+    "@mateoaranda/jikanjs": "^1.2.4",
     "@prisma/client": "^4.9.0",
+    "@shineiichijo/marika": "^2.0.6",
     "@solidjs/meta": "^0.28.2",
     "@solidjs/router": "^0.8.2",
+    "@tutkli/jikan-ts": "^0.6.61",
     "prisma": "^4.9.0",
     "solid-js": "^1.7.2",
     "solid-start": "^0.2.26",
