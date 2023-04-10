@@ -1,16 +1,17 @@
-import { createResource } from "solid-js";
+import { createResource, createSignal, ResourceActions, ResourceReturn } from "solid-js";
 import { refetchRouteData, useRouteData } from "solid-start";
 import { useUser } from "../db/useUser";
 import ListComp from "./listComp";
 import { JikanClient, JikanResponse, Anime } from '@tutkli/jikan-ts';
+import { parseArgs } from "util";
 
 
 export function routeData() {
   return useUser();
 }
 
-export const createAnimeResource = (dataType: string, ...args: any[]) =>
-  createResource<AnimeShow[]>(async () => {
+export const useAnimeResource  = (dataType: string, ...args: any[]) => 
+createResource<AnimeShow[]>(async () => {
     const jikanClient = new JikanClient();
     let response: JikanResponse<Anime[]>;
     switch (dataType) {
@@ -23,16 +24,19 @@ export const createAnimeResource = (dataType: string, ...args: any[]) =>
       default:
           throw new Error(`Invalid AnimeResourceType: ${dataType}`);
     }
+   
     const data = response.data;
     const theShows = data.map((anime: any) => {
+      console.log(anime.title);
       return {
         title: anime.title,
         score: anime.score,
         image_url: anime.images.webp.image_url,
       } as AnimeShow;
     });
+    console.log(theShows)
     return theShows;
-  });
+    });
 
 export type AnimeShow = {
   title: string;
@@ -42,11 +46,34 @@ export type AnimeShow = {
 
 export default function Home() {
   const user = useRouteData<typeof routeData>();
-  const [animeList] = createAnimeResource("search", { q: 'gintama'});
+
+  const [animeList, setAnimeList] = createSignal<AnimeShow[] | undefined>(
+    undefined
+  );
+  const [query, setQuery] = createSignal("");
+ 
+
+  const handleSearch = async () => {
+    console.log("searching for: ", query());
+    const [theShows, {refetch}] = await useAnimeResource("search", { q: query() });
+    if (theShows === undefined) {
+      console.log("theShows is undefined");
+    }
+    else {
+      console.log("theList: " + theShows);
+    }
+    setAnimeList(theShows);
+
+    console.log("animeList: " + animeList());
+  };
 
   return (
     <main class="full-width">
       <h1>Hello {user()?.username}</h1>
+      <div class="search">
+        <input type="text" value={query()} onInput={(evt) => setQuery(evt.currentTarget.value)} />
+        <button onClick={handleSearch}>Search</button>
+      </div>
       <h3>Anime List</h3>
       <ListComp animeList={animeList()}/>
       <button onClick={() => refetchRouteData()}>Refresh</button>
