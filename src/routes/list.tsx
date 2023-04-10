@@ -1,4 +1,4 @@
-import { createResource, createSignal, ResourceActions, ResourceReturn } from "solid-js";
+import { createResource, createSignal, onMount, ResourceActions, ResourceReturn } from "solid-js";
 import { refetchRouteData, useRouteData } from "solid-start";
 import { useUser } from "../db/useUser";
 import ListComp from "./listComp";
@@ -52,7 +52,11 @@ export default function Home() {
   );
   const [query, setQuery] = createSignal("");
  
-
+  onMount(async () => {
+    const [theShows] = await useAnimeResource("top", 1);
+    setAnimeList(theShows);
+  });
+  
   const handleSearch = async () => {
     console.log("searching for: ", query());
     const [theShows, {refetch}] = await useAnimeResource("search", { q: query() });
@@ -62,6 +66,7 @@ export default function Home() {
     else {
       console.log("theList: " + theShows);
     }
+    const crad = await theShows.read();
     setAnimeList(theShows);
 
     console.log("animeList: " + animeList());
