@@ -12,9 +12,19 @@ export function routeData() {
 export const createAnimeResource = (dataType: string, ...args: any[]) =>
   createResource<AnimeShow[]>(async () => {
     const jikanClient = new JikanClient();
-    const response = await jikanClient.top.getTopAnime({page: 1});
-    const data = await response.data;
-    const theShows = await data.map((anime: any) => {
+    let response: JikanResponse<Anime[]>;
+    switch (dataType) {
+      case "top":
+            response = await jikanClient.top.getTopAnime(...args);
+        break;
+      case "search":
+            response = await jikanClient.anime.getAnimeSearch(...args)
+        break;
+      default:
+          throw new Error(`Invalid AnimeResourceType: ${dataType}`);
+    }
+    const data = response.data;
+    const theShows = data.map((anime: any) => {
       return {
         title: anime.title,
         score: anime.score,
@@ -32,7 +42,7 @@ export type AnimeShow = {
 
 export default function Home() {
   const user = useRouteData<typeof routeData>();
-  const [animeList] = createAnimeResource('loadTop', 1);
+  const [animeList] = createAnimeResource("search", { q: 'gintama'});
 
   return (
     <main class="full-width">
