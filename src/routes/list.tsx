@@ -66,7 +66,6 @@ export default function Home() {
     else {
       console.log("theList: " + theShows);
     }
-    const crad = await theShows.read();
     setAnimeList(theShows);
 
     console.log("animeList: " + animeList());
