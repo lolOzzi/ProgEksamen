@@ -2,41 +2,34 @@ import { createResource, createSignal, onMount, ResourceActions, ResourceReturn 
 import { refetchRouteData, useRouteData } from "solid-start";
 import { useUser } from "../db/useUser";
 import ListComp from "./listComp";
-import { JikanClient, JikanResponse, Anime } from '@tutkli/jikan-ts';
-import { parseArgs } from "util";
-
+import { JikanClient, JikanResponse, Anime, AnimeClient } from '@tutkli/jikan-ts';
 
 export function routeData() {
   return useUser();
 }
 
-export const useAnimeResource = async (dataType: string, ...args: any[]) =>
-  {
-    const jikanClient = new JikanClient();
-    let response: JikanResponse<Anime[]>;
-    switch (dataType) {
-      case "top":
-        response = await jikanClient.top.getTopAnime(...args);
-        break;
-      case "search":
-        response = await jikanClient.anime.getAnimeSearch(...args)
-        break;
-      default:
-        throw new Error(`Invalid AnimeResourceType: ${dataType}`);
-    }
+type JikanObject = keyof JikanClient;
 
-    const data = response.data;
-    const theShows = data.map((anime: any) => {
-      console.log(anime.title);
-      return {
-        title: anime.title,
-        score: anime.score,
-        image_url: anime.images.webp.image_url,
-      } as AnimeShow;
-    });
-    console.log(theShows)
-    return theShows;
-  }
+export const getAnimeList = async <T extends JikanObject>(
+  objectName: T, methodName: keyof JikanClient[T], ...args: any[]
+) => {
+  const jikanClient = new JikanClient();
+  let response: JikanResponse<Anime[]>;
+
+  response = await (jikanClient[objectName][methodName] as (...args: any[]) => Promise<JikanResponse<Anime[]>>)(...args);
+  
+  const data = response.data;
+  const theShows = data.map((anime: any) => {
+    console.log(anime.title);
+    return {
+      title: anime.title,
+      score: anime.score,
+      image_url: anime.images.webp.image_url,
+    } as AnimeShow;
+  });
+  console.log(theShows)
+  return theShows;
+}
 
 export type AnimeShow = {
   title: string;
@@ -47,20 +40,18 @@ export type AnimeShow = {
 export default function Home() {
   const user = useRouteData<typeof routeData>();
 
-  const [animeList, setAnimeList] = createSignal<AnimeShow[] | undefined>(
-    undefined
-  );
-  //const [animeList] = useAnimeResource("top", 1);
+  const [animeList, setAnimeList] = createSignal<AnimeShow[] | undefined>(undefined);
   const [query, setQuery] = createSignal("");
 
   onMount(async () => {
-    const theShows = await useAnimeResource("top", 1);
+    const theShows = await getAnimeList("top", "getTopAnime");
     setAnimeList(theShows);
   });
 
   const handleSearch = async () => {
     console.log("searching for: ", query());
-    const theShows = await useAnimeResource("search", { q: query() });
+    const theShows = await getAnimeList("anime", "getAnimeSearch", { q: query() });
+    
     setAnimeList(theShows);
 
   };
