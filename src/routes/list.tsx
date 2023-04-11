@@ -8,9 +8,8 @@ export function routeData() {
   return useUser();
 }
 
-type JikanObject = keyof JikanClient;
 
-export const getAnimeList = async <T extends JikanObject>(
+export const getAnimeList = async <T extends keyof JikanClient>(
   objectName: T, methodName: keyof JikanClient[T], ...args: any[]
 ) => {
   const jikanClient = new JikanClient();
