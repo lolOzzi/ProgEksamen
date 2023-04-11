@@ -11,6 +11,8 @@ export function routeData() {
 //  https://docs.api.jikan.moe/ for at finde overkatagorier, underkatagorier og parametre
 //  syntax: getAnimeList("Overkatagorie", "Underkatagorie", {parametre})  
 //  ex. getAnimeList("top", "getTopAnime", { page: 1 }) 
+//  ex. getAnimeList("top", "getTopAnime")  //  default page = 1, så dette er det samme som ovenstående
+//  ex. getAnimeList("anime", "getAnimeSearch", { q: "naruto" })
 export const getAnimeList = async <T extends keyof JikanClient>(
   objectName: T, methodName: keyof JikanClient[T], ...args: any[]
 ) => {
