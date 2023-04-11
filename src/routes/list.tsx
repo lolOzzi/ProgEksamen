@@ -10,21 +10,21 @@ export function routeData() {
   return useUser();
 }
 
-export const useAnimeResource  = (dataType: string, ...args: any[]) => 
-createResource<AnimeShow[]>(async () => {
+export const useAnimeResource = async (dataType: string, ...args: any[]) =>
+  {
     const jikanClient = new JikanClient();
     let response: JikanResponse<Anime[]>;
     switch (dataType) {
       case "top":
-            response = await jikanClient.top.getTopAnime(...args);
+        response = await jikanClient.top.getTopAnime(...args);
         break;
       case "search":
-            response = await jikanClient.anime.getAnimeSearch(...args)
+        response = await jikanClient.anime.getAnimeSearch(...args)
         break;
       default:
-          throw new Error(`Invalid AnimeResourceType: ${dataType}`);
+        throw new Error(`Invalid AnimeResourceType: ${dataType}`);
     }
-   
+
     const data = response.data;
     const theShows = data.map((anime: any) => {
       console.log(anime.title);
@@ -36,7 +36,7 @@ createResource<AnimeShow[]>(async () => {
     });
     console.log(theShows)
     return theShows;
-    });
+  }
 
 export type AnimeShow = {
   title: string;
@@ -50,25 +50,19 @@ export default function Home() {
   const [animeList, setAnimeList] = createSignal<AnimeShow[] | undefined>(
     undefined
   );
+  //const [animeList] = useAnimeResource("top", 1);
   const [query, setQuery] = createSignal("");
- 
+
   onMount(async () => {
-    const [theShows] = await useAnimeResource("top", 1);
+    const theShows = await useAnimeResource("top", 1);
     setAnimeList(theShows);
   });
-  
+
   const handleSearch = async () => {
     console.log("searching for: ", query());
-    const [theShows, {refetch}] = await useAnimeResource("search", { q: query() });
-    if (theShows === undefined) {
-      console.log("theShows is undefined");
-    }
-    else {
-      console.log("theList: " + theShows);
-    }
+    const theShows = await useAnimeResource("search", { q: query() });
     setAnimeList(theShows);
 
-    console.log("animeList: " + animeList());
   };
 
   return (
@@ -79,7 +73,7 @@ export default function Home() {
         <button onClick={handleSearch}>Search</button>
       </div>
       <h3>Anime List</h3>
-      <ListComp animeList={animeList()}/>
+      <ListComp animeList={animeList()} />
       <button onClick={() => refetchRouteData()}>Refresh</button>
     </main>
   );
