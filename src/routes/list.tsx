@@ -13,14 +13,13 @@ export function routeData() {
 //  ex. getAnimeList("top", "getTopAnime", { page: 1 }) 
 //  ex. getAnimeList("top", "getTopAnime")  //  default page = 1, så dette er det samme som ovenstående
 //  ex. getAnimeList("anime", "getAnimeSearch", { q: "naruto" })
-export const getAnimeList = async <T extends keyof JikanClient>(
-  objectName: T, methodName: keyof JikanClient[T], ...args: any[]
-) => {
+export const getAnimeList = async <T extends keyof JikanClient>(objectName: T, methodName: keyof JikanClient[T], ...args: any[]) => {
+  
   const jikanClient = new JikanClient();
   let response: JikanResponse<Anime[]>;
 
   response = await (jikanClient[objectName][methodName] as (...args: any[]) => Promise<JikanResponse<Anime[]>>)(...args);
-  
+
   const data = response.data;
   const theShows = data.map((anime: any) => {
     console.log(anime.title);
@@ -54,7 +53,7 @@ export default function Home() {
   const handleSearch = async () => {
     console.log("searching for: ", query());
     const theShows = await getAnimeList("anime", "getAnimeSearch", { q: query() });
-    
+
     setAnimeList(theShows);
 
   };
