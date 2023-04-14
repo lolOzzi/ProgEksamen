@@ -33,12 +33,31 @@ export default function Home() {
     <main class="full-width">
       <h1>Hello {user()?.username}</h1>
       <div class="search">
-        <input type="text" value={query()} onInput={(evt) => setQuery(evt.currentTarget.value)} />
-        <button onClick={handleSearch}>Search</button>
+        <input id="search-box" type="text" value={query()} onInput={(evt) => setQuery(evt.currentTarget.value)} />
+        <button id="search-button" onClick={handleSearch}>Search</button>
       </div>
       <h3>Anime List</h3>
       <ListComp animeList={animeList()} />
       <button onClick={() => refetchRouteData()}>Refresh</button>
+      <style>
+        {`
+          .search > * {
+              margin: 0;
+              padding: 0;
+          }
+      
+          #search-button {
+              margin-left: 10px;
+              margin-right: 80vw;
+              width: 100px;
+          }
+      
+          #search-box {
+              width: 20vw;
+          }
+        `}
+      </style>
     </main>
+
   );
 }
