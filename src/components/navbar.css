@@ -1,0 +1,19 @@
+li {
+    float: left;
+    display: inline;
+}
+
+a {
+    display: block;
+    padding: 10px;
+    background-color: #dddddd;
+    text-decoration: none;
+    color: black;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(74, 74, 76);
+}

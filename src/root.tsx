@@ -12,6 +12,7 @@ import {
   Title,
 } from "solid-start";
 import "./root.css";
+import NavBar from "./components/navbar";
 
 export default function Root() {
   return (
@@ -24,6 +25,7 @@ export default function Root() {
       <Body>
         <ErrorBoundary>
           <Suspense fallback={<div>Loading</div>}>
+            <NavBar/>
             <Routes>
               <FileRoutes />
             </Routes>
