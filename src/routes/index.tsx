@@ -16,8 +16,7 @@ export default function Home() {
 
   return (
     <main class="full-width">
-      <h1>Hello {user()?.username}</h1>
-      <h3>Message board</h3>
+      
       <button onClick={() => refetchRouteData()}>Refresh</button>
       <Form>
         <button name="logout" type="submit">
