@@ -17,8 +17,7 @@ export const getAnimeList = async <T extends keyof JikanClient>(objectName: T, m
 
   const data = response.data;
   const theShows = data.map((anime: any) => {
-    console.log(anime.title);
-    console.log(anime.mal_id);
+    //console.log(anime.title);
     return {
       title: anime.title,
       score: anime.score,

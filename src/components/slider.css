@@ -1,0 +1,21 @@
+.carousel-container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 800px;
+    height: 100%;
+  }
+.carousel-items {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 750px;
+  }
+  
+  .carousel-button:hover {
+    color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .carousel-button_next {
+    right: 0;
+  }
