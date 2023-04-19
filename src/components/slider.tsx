@@ -8,7 +8,7 @@ export default function Slider(props: { animeList?: AnimeShow[] }) {
   const [items, setItems] = createSignal() as Signal<AnimeShow[] | undefined>;
   setItems(props.animeList);
 
-  console.log(items());
+  console.log("Items: " + items());
 
   const changeActive = (direction: number) => {
     const length = items()?.length;

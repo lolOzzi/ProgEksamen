@@ -4,7 +4,7 @@ import { logout } from "~/db/session";
 import { useUser } from "../db/useUser";
 import Slider from "../components/slider";
 import { getAnimeList, AnimeShow } from "../components/listComp";
-import { createSignal, onMount } from "solid-js";
+import { createResource, createSignal, onMount } from "solid-js";
 
 export function routeData() {
   return useUser();
@@ -15,20 +15,34 @@ export default function Home() {
   const [, { Form }] = createServerAction$((f: FormData, { request }) =>
     logout(request)
   );
+  const [topAnimeList] = createResource( async () => await getAnimeList("top", "getTopAnime"));
+  const [seasonAnimeList] = createResource(async () => await getAnimeList("seasons", "getSeasonNow"));
+  const [nextSeasonAnimeList ] = createResource(async () => await getAnimeList("seasons", "getSeasonUpcoming"));
 
-  const [topAnimeList, setTopAnimeList] = createSignal<AnimeShow[] | undefined>(undefined);
-  const [seasonAnimeList, setSeasonAnimeList] = createSignal<AnimeShow[] | undefined>(undefined);
-  const [nextSeasonAnimeList, setNextSeasonAnimeList] = createSignal<AnimeShow[] | undefined>(undefined);
 
-  onMount(async () => {
-    const theTopShows = await getAnimeList("top", "getTopAnime");
-    setTopAnimeList(theTopShows);
-    const theSeasonShows = await getAnimeList("seasons", "getSeasonNow");
-    setSeasonAnimeList(theSeasonShows);
-    const theNextSeasonShows = await getAnimeList("seasons", "getSeasonUpcoming");
-    setNextSeasonAnimeList(theNextSeasonShows);
 
-  });
+  if (topAnimeList() === undefined || seasonAnimeList() === undefined || nextSeasonAnimeList() === undefined) {
+    return (
+      <main class="full-width">
+      <h1>Home</h1>
+      <h3>Top Anime</h3>
+      <p>Loading...</p>
+      <h3>Current Season Anime</h3>
+      <p>Loading...</p>
+      <h3>Next Season Anime</h3>
+      <p>Loading...</p>
+
+
+      <button onClick={() => refetchRouteData()}>Refresh</button>
+      <Form>
+        <button name="logout" type="submit">
+          Logout
+        </button>
+      </Form>
+      <script>
+      </script>
+    </main>
+    )}
 
   return (
     <main class="full-width">

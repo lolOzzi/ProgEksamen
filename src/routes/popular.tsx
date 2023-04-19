@@ -10,6 +10,9 @@ export default function Home() {
   const [animeList, setAnimeList] = createSignal<AnimeShow[] | undefined>(undefined);
   const [query, setQuery] = createSignal("");
 
+  
+
+
   onMount(async () => {
     const theShows = await getAnimeList("top", "getTopAnime", { filter: "bypopularity" });
     setAnimeList(theShows);

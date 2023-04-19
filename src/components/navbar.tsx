@@ -32,9 +32,9 @@ export default function NavBar() {
                 </li>
                 <li><a href="/reccomendations">Reccomendations</a></li>
                 <li>
-                    <input id="search-box" type="text" value={query()} onInput={(evt) => setQuery(evt.currentTarget.value)} />
+                    <input id="nav-search-box" type="text" value={query()} onInput={(evt) => setQuery(evt.currentTarget.value)} />
                 </li>
-                <li><a class="search-button" href={"/search?q=" + query()}>Search</a></li>
+                <li><a class="nav-search-button" href={"/search?q=" + query()}>Search</a></li>
                 <li class="profile"><a href={username() ? "/profile" : "/login"}>{username() ? username() : "Not logged in"}</a></li>
             </ul>
         </div>

@@ -14,4 +14,21 @@ model User {
   id       String @id @default(uuid())
   username String @unique
   password String
+  list    List?
 }
+
+model Anime {
+  id     Int  @id
+  List  List @relation(fields: [listId], references: [id])
+  listId Int
+  rating Int  @default(0)
+}
+
+model List {
+  id        Int    @default(autoincrement()) @id
+  user      User   @relation(fields: [userId], references: [id])
+  userId    String @unique
+  name      String @unique
+  anime_ids Anime[]
+}
+

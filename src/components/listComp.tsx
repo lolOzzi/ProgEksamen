@@ -7,7 +7,7 @@ import { JikanClient, JikanResponse, Anime, AnimeClient } from '@tutkli/jikan-ts
 //  syntax: getAnimeList("Overkatagorie", "Underkatagorie", {parametre})  
 //  ex. getAnimeList("top", "getTopAnime", { page: 1 }) 
 //  ex. getAnimeList("top", "getTopAnime")  //  default page = 1, så dette er det samme som ovenstående
-//  ex. getAnimeList("anime", "getAnimeSearch", { q: "naruto" })
+//  ex. getAnimeList("anime", "getAnimeSearch", { q: "naruto", page: 1 })
 export const getAnimeList = async <T extends keyof JikanClient>(objectName: T, methodName: keyof JikanClient[T], ...args: any[]) => {
   
   const jikanClient = new JikanClient();

@@ -75,6 +75,13 @@ export async function getUser(db: PrismaClient, request: Request) {
   }
 }
 
+export async function getUserList(userId: string) {
+  const list = await db.list.findUnique({ where: { userId } });
+  if (!list) return null;
+  return list;
+}
+
+
 export async function logout(request: Request) {
   const session = await storage.getSession(request.headers.get("Cookie"));
   return redirect("/login", {

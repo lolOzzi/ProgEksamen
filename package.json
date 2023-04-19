@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@mateoaranda/jikanjs": "^1.2.4",
-    "@prisma/client": "^4.9.0",
+    "@prisma/client": "^4.13.0",
     "@shineiichijo/marika": "^2.0.6",
     "@solidjs/meta": "^0.28.2",
     "@solidjs/router": "^0.8.2",
