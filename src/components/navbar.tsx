@@ -1,16 +1,13 @@
 import "./navbar.css";
-import { createEffect, createMemo, createResource, createSignal, Signal } from 'solid-js';
-import { useUser } from "../db/useUser";
-import { Navigate, useLocation } from "solid-start";
-import { createServerAction$, redirect } from "solid-start/server";
-import { useNavigate } from "solid-start";
+import { createSignal, Signal } from 'solid-js';
+import { useUser } from "../db/useUserData";
+import { useLocation } from "solid-start";
 
 
 
 export default function NavBar() {
     const [query, setQuery] = createSignal("");
     let [username, setUsername] = createSignal("Login") as Signal<string | undefined>;
-    
     if (!useLocation().pathname.includes("login")) {
         const user = useUser();
         setUsername(user()?.username);
@@ -35,7 +32,7 @@ export default function NavBar() {
                     <input id="nav-search-box" type="text" value={query()} onInput={(evt) => setQuery(evt.currentTarget.value)} />
                 </li>
                 <li><a class="nav-search-button" href={"/search?q=" + query()}>Search</a></li>
-                <li class="profile"><a href={username() ? "/profile" : "/login"}>{username() ? username() : "Not logged in"}</a></li>
+                <li class="profile"><a href={username() ? "/users/" + username() + "/profile" : "/login"}>{username() ? username() : "Not logged in"}</a></li>
             </ul>
         </div>
     )

@@ -24,6 +24,7 @@ export const useUserList = () =>
       throw redirect("/login");
     }
     const list = await db.list.findUnique({ where: { userId: user.id } });
+    const anime = await db.anime.findMany({ where: { listId: list?.id } });
     if (!list) return null;
-    return list;
+    return {list, anime};
   });

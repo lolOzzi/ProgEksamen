@@ -1,9 +1,9 @@
 import { createResource, createSignal, onMount, ResourceActions, ResourceReturn } from "solid-js";
 import { refetchRouteData, useRouteData } from "solid-start";
-import { useUser } from "../db/useUser";
-import ListComp from "../components/listComp";
+import { useUser } from "../db/useUserData";
+import ListComp from "../components/AnimeList";
 
-import { AnimeShow, getAnimeList } from '../components/listComp';
+import { AnimeShow, getAnimeList } from '../components/AnimeList';
 
 export default function Home() {
 

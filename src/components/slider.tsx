@@ -1,15 +1,13 @@
 import { createSignal, For, Signal } from "solid-js";
 import "./slider.css"
-import { AnimeShow } from "../components/listComp";
+import { AnimeShow } from "./AnimeList";
 
 
 export default function Slider(props: { animeList?: AnimeShow[] }) {
   const [active, setActive] = createSignal(0);
   const [items, setItems] = createSignal() as Signal<AnimeShow[] | undefined>;
   setItems(props.animeList);
-
-  console.log("Items: " + items());
-
+  
   const changeActive = (direction: number) => {
     const length = items()?.length;
     if (active() + direction < 0 || active() + direction >= (length? length : 0)) {

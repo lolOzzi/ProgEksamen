@@ -18,9 +18,10 @@ model User {
 }
 
 model Anime {
-  id     Int  @id
+  id     Int  @id @default(autoincrement())
+  mal_id Int @default(1)
   List  List @relation(fields: [listId], references: [id])
-  listId Int
+  listId Int                       
   rating Int  @default(0)
 }
 
@@ -28,7 +29,6 @@ model List {
   id        Int    @default(autoincrement()) @id
   user      User   @relation(fields: [userId], references: [id])
   userId    String @unique
-  name      String @unique
   anime_ids Anime[]
 }
 

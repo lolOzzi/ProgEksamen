@@ -1,5 +1,7 @@
-import { For } from 'solid-js';
+import { createEffect, For, splitProps } from 'solid-js';
 import { JikanClient, JikanResponse, Anime, AnimeClient } from '@tutkli/jikan-ts';
+import { clientOnly } from 'solid-start/islands';
+import { unstable_clientOnly } from 'solid-start';
 
 
 
@@ -8,6 +10,9 @@ import { JikanClient, JikanResponse, Anime, AnimeClient } from '@tutkli/jikan-ts
 //  ex. getAnimeList("top", "getTopAnime", { page: 1 }) 
 //  ex. getAnimeList("top", "getTopAnime")  //  default page = 1, så dette er det samme som ovenstående
 //  ex. getAnimeList("anime", "getAnimeSearch", { q: "naruto", page: 1 })
+/*export const theThing = clientOnly<any>(async () => { 
+  return {default: await getAnimeList("top", "getTopAnime", { page: 1 })}
+})*/
 export const getAnimeList = async <T extends keyof JikanClient>(objectName: T, methodName: keyof JikanClient[T], ...args: any[]) => {
   
   const jikanClient = new JikanClient();
@@ -24,7 +29,6 @@ export const getAnimeList = async <T extends keyof JikanClient>(objectName: T, m
       image_url: anime.images.webp.image_url,
     } as AnimeShow;
   });
-  console.log(theShows)
   return theShows;
 }
 
@@ -34,10 +38,11 @@ export type AnimeShow = {
   image_url: string;
 };
 
-export default function AnimeList(props: {animeList?: AnimeShow[]}) {
+export default function AnimeList(props: any) {
+  const [local, others] = splitProps(props, ['animeList']);
   return (
     <>
-      <For each={props.animeList}>
+      <For each={local.animeList}>
         {(anime) => (
           <div>
             <img src={anime.image_url} alt={anime.title} />

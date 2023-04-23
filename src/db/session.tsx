@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { Anime } from "@shineiichijo/marika";
 import { redirect } from "solid-start/server";
 import { createCookieSessionStorage } from "solid-start/session";
 import { db } from ".";
@@ -6,6 +7,11 @@ type LoginForm = {
   username: string;
   password: string;
 };
+type animeForm = {
+  mal_id: number;
+  rating: number;
+}
+
 
 export async function register({ username, password }: LoginForm) {
   return db.user.create({
@@ -79,6 +85,29 @@ export async function getUserList(userId: string) {
   const list = await db.list.findUnique({ where: { userId } });
   if (!list) return null;
   return list;
+}
+
+export async function addAnimeToUserList({ mal_id, rating }: animeForm, userId: string) {
+  let list = await getUserList(userId);
+  if (!list) {
+    return list = await db.list.create({
+      data: {
+        user: { connect: { id: userId } },
+      },
+    })
+  }
+  console.log("list" + list);
+  const anime = await db.anime.create({
+    data: { 
+      mal_id: mal_id,
+      List: {
+        connect: { id: list.id },
+      },
+      rating: rating,
+    },
+  });
+  console.log("anime" + anime)
+  return anime; 
 }
 
 
