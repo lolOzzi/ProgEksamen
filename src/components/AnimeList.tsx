@@ -36,6 +36,7 @@ export type AnimeShow = {
   title: string;
   score: number;
   image_url: string;
+  rating?: string;
 };
 
 export default function AnimeList(props: any) {

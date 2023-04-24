@@ -16,24 +16,15 @@ export const theAnime = async (list: Resource<{
   anime: Anime[];
 } | null | undefined>) => {
 
-  const animeIds = list()?.anime.map((anime: any) => anime.mal_id);
-  console.log(animeIds)
-
-  const animePromises = animeIds?.map(async (id: any) => {
-    console.log("animePromises " + id)
-    const jikan = new JikanClient();
-    return (await jikan.anime.getAnimeById(id)).data;
-  });
-
-  const animeListValue = await Promise.all(animePromises || []);
-  console.log("animeListValue " + animeListValue)
-  const theShows = animeListValue.map((anime) => {
+  const theShows = list()?.anime.map((anime) => {
     return {
       title: anime.title,
       score: anime.score,
-      image_url: anime.images.jpg.image_url,
+      image_url: anime.image_url,
+      rating: anime.rating.toString(),
     } as AnimeShow;
   });
+
   console.log("theShows " + theShows)
   return theShows
 }
@@ -42,18 +33,18 @@ export default function Home() {
   const userData = useRouteData<typeof routeData>();
   const userList = userData.list;
   const user = userData.user;
-  const [aniList, setAniList] = createSignal<AnimeShow[]>([]);
-  createMemo( () => theAnime(userList)); // dont remove this line
-
+  const [aniList, setAniList] = createSignal<AnimeShow[] | undefined>([]);
+  const listmoment = createMemo( async () => await theAnime(userList)); // dont remove this line
+/*
   createEffect(async () => {
     const data = await theAnime(userList);
     setAniList(data);
-  });
+  });*/
 
   return (
     <main class="full-width">
       <h1>{user()?.username + "'s profile"}</h1>
-      <AnimeList animeList={aniList()} />
+      <AnimeList animeList={listmoment()} />
     </main>
   );
 }

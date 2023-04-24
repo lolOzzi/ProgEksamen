@@ -18,11 +18,13 @@ model User {
 }
 
 model Anime {
-  id     Int  @id @default(autoincrement())
-  mal_id Int @default(1)
-  List  List @relation(fields: [listId], references: [id])
-  listId Int                       
-  rating Int  @default(0)
+  id        Int  @id @default(autoincrement())
+  title     String
+  image_url String
+  score     Float
+  List      List @relation(fields: [listId], references: [id])
+  listId    Int                       
+  rating    Int  @default(0)
 }
 
 model List {
