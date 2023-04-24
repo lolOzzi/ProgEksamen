@@ -11,12 +11,12 @@ export function routeData() {
   return {list: useUserList(), user: useUser()};
 }
 
-export const theAnime = async (list: Resource<{
+export const userAnimeList = async (list: Resource<{
   list: List;
   anime: Anime[];
 } | null | undefined>) => {
 
-  const theShows = list()?.anime.map((anime) => {
+  return list()?.anime.map((anime) => {
     return {
       title: anime.title,
       score: anime.score,
@@ -24,9 +24,6 @@ export const theAnime = async (list: Resource<{
       rating: anime.rating.toString(),
     } as AnimeShow;
   });
-
-  console.log("theShows " + theShows)
-  return theShows
 }
 
 export default function Home() {
@@ -34,17 +31,18 @@ export default function Home() {
   const userList = userData.list;
   const user = userData.user;
   const [aniList, setAniList] = createSignal<AnimeShow[] | undefined>([]);
-  const listmoment = createMemo( async () => await theAnime(userList)); // dont remove this line
-/*
+  createMemo( () => userAnimeList(userList)); // dont remove this line
+
   createEffect(async () => {
-    const data = await theAnime(userList);
+    const data = await userAnimeList(userList);
     setAniList(data);
-  });*/
+  });
 
   return (
     <main class="full-width">
       <h1>{user()?.username + "'s profile"}</h1>
-      <AnimeList animeList={listmoment()} />
+      <AnimeList animeList={aniList()} />
     </main>
   );
 }
+

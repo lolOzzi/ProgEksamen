@@ -5,11 +5,9 @@ import { AnimeShow } from "./AnimeList";
 
 export default function Slider(props: { animeList?: AnimeShow[] }) {
   const [active, setActive] = createSignal(0);
-  const [items, setItems] = createSignal() as Signal<AnimeShow[] | undefined>;
-  setItems(props.animeList);
   
   const changeActive = (direction: number) => {
-    const length = items()?.length;
+    const length = props.animeList?.length;
     if (active() + direction < 0 || active() + direction >= (length? length : 0)) {
       return;
     }
@@ -27,7 +25,7 @@ export default function Slider(props: { animeList?: AnimeShow[] }) {
             class="carousel-item"
             style={`transform: translateX(${(index() - active()) * 100}%); transition: transform 0.4s ease;`}
           >
-            <div>
+            <div class="card">
               <img src={item.image_url} alt={item.title} />
               <p>{item.title}</p>
               <p>{item.score}</p>
