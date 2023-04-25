@@ -35,6 +35,14 @@ export default function Slider(props: { animeList?: AnimeShow[] }) {
         </For>
       </div>
       <button class="carousel-button carousel-button_next" onClick={() => changeActive(1)}>›</button>
+      <style>
+      {`
+      img {
+        width: image-width;
+      }
+      `}
+    </style>
     </div>
+
   );
 }

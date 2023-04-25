@@ -41,7 +41,7 @@ export default function Home() {
   return (
     <main class="full-width">
       <h1>{user()?.username + "'s profile"}</h1>
-      <AnimeList animeList={aniList()} />
+      <AnimeList animeList={aniList()} isUserList="true" />
     </main>
   );
 }

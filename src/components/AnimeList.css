@@ -1,0 +1,12 @@
+.animelist-item-container> td > p {
+  color: black;
+}
+
+.animelist-item-container> td > img {
+  width: 100px;
+}
+
+.anime-table>tbody>tr>td {
+  text-align: center;
+  padding: 10px;
+}

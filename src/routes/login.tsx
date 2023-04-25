@@ -94,7 +94,7 @@ export default function Login() {
   return (
     <main>
       <h1>Login</h1>
-      <Form>
+      <Form class="login-form">
         <input
           type="hidden"
           name="redirectTo"
@@ -115,17 +115,17 @@ export default function Login() {
           <input name="username" placeholder="kody" />
         </div>
         <Show when={loggingIn.error?.fieldErrors?.username}>
-          <p role="alert">{loggingIn.error.fieldErrors.username}</p>
+          <p class="alert" role="alert">{loggingIn.error.fieldErrors.username}</p>
         </Show>
         <div>
           <label for="password-input">Password</label>
           <input name="password" type="password" placeholder="twixrox" />
         </div>
         <Show when={loggingIn.error?.fieldErrors?.password}>
-          <p role="alert">{loggingIn.error.fieldErrors.password}</p>
+          <p class="alert"  role="alert">{loggingIn.error.fieldErrors.password}</p>
         </Show>
         <Show when={loggingIn.error}>
-          <p role="alert" id="error-message">
+          <p class="alert"  role="alert" id="error-message">
             {loggingIn.error.message}
           </p>
         </Show>
