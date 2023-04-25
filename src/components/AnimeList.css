@@ -1,12 +1,42 @@
-.animelist-item-container> td > p {
+
+table, tbody, th, td {
+
+  border-collapse: collapse;
+  
+}
+
+td {
+  border-bottom: 4px solid #dbdbdb;
+  border-top: 4px solid #dbdbdb;
+}
+
+
+.animelist-item-container > td > p {
   color: black;
 }
 
-.animelist-item-container> td > img {
-  width: 100px;
+.animelist-item-container > td > img {
+  width: 150px;
+  padding: 0;
+  vertical-align: middle;
 }
 
-.anime-table>tbody>tr>td {
+.anime-table > tbody > tr > td {
   text-align: center;
-  padding: 10px;
+  padding: 0;
+  margin: 0;
+  padding-inline: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.anime-table > * {
+  font-size: 1.2em;
+}
+
+.ranking{
+  font-family: 'Impact', 'Arial Narrow Bold', sans-serif;
+  font-size: 3.5em;
+  background-color: #003f75;
+  color: white;
+  padding: 30px;
 }
