@@ -2,6 +2,7 @@ import { createResource, createSignal, onMount, ResourceActions, ResourceReturn 
 import { refetchRouteData, useRouteData } from "solid-start";
 import { useUser } from "../db/useUserData";
 import ListComp from "../components/AnimeList";
+import './basiclists.css';
 
 import { AnimeShow, getAnimeList } from '../components/AnimeList';
 
@@ -21,9 +22,10 @@ export default function Home() {
 
   return (
     <main class="full-width">
-      <h1>Most Popular Anime</h1>
-      <h3>Anime List</h3>
-      <ListComp animeList={animeList()} />
+      <h1 class="list-title">Most Popular Anime</h1>
+      <div class="list-container">
+          <ListComp animeList={animeList()} />
+      </div>
       <button onClick={() => refetchRouteData()}>Refresh</button>
     </main>
 

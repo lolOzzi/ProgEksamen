@@ -33,16 +33,20 @@ export default function Home() {
 
   return (
     <main class="full-width">
-      <h1>Anime Search</h1>
+      <h1 class="list-title">Anime Search</h1>
       <div class="search">
-        <input id="search-box" type="text" value={searchParams.q? searchParams.q : ""} onInput={(evt) => {setSearchParams({ q: evt.currentTarget.value });}}/>
-        <button id="search-button" onClick={handleSearch}>Search</button>
+        <div id="search-container">
+          <input id="search-box" type="text" value={searchParams.q ? searchParams.q : ""} onInput={(evt) => { setSearchParams({ q: evt.currentTarget.value }); }} />
+          <button id="search-button" onClick={handleSearch}>Search</button>
+        </div>
       </div>
-      <ListComp animeList={animeList()} />
+      <div class="list-container">
+        <ListComp animeList={animeList()} />
+      </div>
       <button onClick={() => refetchRouteData()}>Refresh</button>
       <style>
         {`
-          .search > * {
+          .search > * > * {
               margin: 0;
               padding: 4px;
               font-size: 1.2em;
@@ -50,11 +54,11 @@ export default function Home() {
           }
       
           #search-button {
-              margin-left: 10px;
-              margin-right: 80vw;
               width: 100px;
               font-size: 1.25em;
-              padding: 6px;
+              margin-left: 10px;
+              background-color: #003f75;
+              color: white;
           }
       
           #search-box {
@@ -67,6 +71,11 @@ export default function Home() {
               justify-content: center;
               align-items: center;
               margin-top: 20px;
+          }
+          #search-container {
+            padding: 10px;
+            background-color: #dbdbdb;
+            border-radius: 5px;
           }
         `}
       </style>

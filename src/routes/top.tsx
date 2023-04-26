@@ -18,9 +18,10 @@ export default function Home() {
 
   return (
     <main class="full-width">
-      <h1>Top Anime</h1>
-      <h3>Anime List</h3>
-      <ListComp animeList={animeList()} isRanked="true" />
+      <h1 class="list-title">Top Anime</h1>
+      <div class="list-container">
+        <ListComp animeList={animeList()} isRanked="true" />
+      </div>
       <button onClick={() => refetchRouteData()}>Refresh</button>
     </main>
 

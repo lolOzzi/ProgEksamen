@@ -23,10 +23,10 @@ export default function Slider(props: { animeList?: AnimeShow[] }) {
         {(item, index) => (
           <div
             class="carousel-item"
-            style={`transform: translateX(${(index() - active()) * 100}%); transition: transform 0.4s ease;`}
+            style={`transform: translateX(-${active() * 100}%); left: ${index() * 100*1.2}%; transition: transform 0.4s ease;`}
           >
             <div class="card">
-              <img src={item.image_url} alt={item.title} />
+              <img class="slider-img" src={item.image_url} alt={item.title} />
               <p>{item.title}</p>
               <p>{item.score}</p>
             </div>
@@ -37,8 +37,14 @@ export default function Slider(props: { animeList?: AnimeShow[] }) {
       <button class="carousel-button carousel-button_next" onClick={() => changeActive(1)}>›</button>
       <style>
       {`
-      img {
+      .slider-img {
         width: image-width;
+        height: 320px;
+      }
+      .card {
+        height: 440px;
+        width: 230px;
+        margin-inline: 10px;
       }
       `}
     </style>

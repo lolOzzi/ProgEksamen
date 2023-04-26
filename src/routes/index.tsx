@@ -6,6 +6,7 @@ import Slider from "../components/slider";
 import { getAnimeList, AnimeShow } from "../components/AnimeList";
 import { createResource, createSignal, onMount } from "solid-js";
 import { clientOnly } from "solid-start/islands";
+import { AnimeSeason } from "@tutkli/jikan-ts";
 
 export function routeData() {
   return useUser();
@@ -16,10 +17,20 @@ export default function Home() {
   const [, { Form }] = createServerAction$((f: FormData, { request }) =>
     logout(request)
   );
+  enum AnimeSeason {
+    winter = 0,
+    spring = 1,
+    summer = 2,
+    fall = 3,
+  }
+  const getSeason = (d: Date) => Math.floor((d.getMonth() / 12 * 4)) % 4;
+  const date = new Date();
+
   const [topAnimeList] = createResource( async () => await getAnimeList("top", "getTopAnime"));
   const [seasonAnimeList] = createResource(async () => await getAnimeList("seasons", "getSeasonNow"));
-  const [nextSeasonAnimeList ] = createResource(async () => await getAnimeList("seasons", "getSeasonUpcoming"));
-
+  const [nextSeasonAnimeList ] = createResource(async () => await getAnimeList("seasons", "getSeason", date.getFullYear(), AnimeSeason[getSeason(date) + 1]));
+  //const [nextSeasonAnimeList ] = createResource(async () => await getAnimeList("seasons", "getSeasonUpcoming")); API is broken
+ 
 
 
   return (
@@ -31,8 +42,6 @@ export default function Home() {
       <Slider animeList={seasonAnimeList()}/>
       <h3>Next Season Anime</h3>
       <Slider animeList={nextSeasonAnimeList()}/>
-
-
       <button onClick={() => refetchRouteData()}>Refresh</button>
       <Form>
         <button name="logout" type="submit">
@@ -40,8 +49,6 @@ export default function Home() {
         </button>
       </Form>
       <script>
-
-      
 
 
       </script>

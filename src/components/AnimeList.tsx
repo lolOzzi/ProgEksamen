@@ -3,12 +3,14 @@ import { JikanClient, JikanResponse, Anime, AnimeClient } from '@tutkli/jikan-ts
 import { clientOnly } from 'solid-start/islands';
 import { unstable_clientOnly } from 'solid-start';
 import "./AnimeList.css";
+import { addAnimeToUserList } from '~/db/session';
+import { createServerAction$ } from 'solid-start/server';
+import { Form } from 'solid-start/data/Form';
 
 export const getAnimeList = async <T extends keyof JikanClient>(objectName: T, methodName: keyof JikanClient[T], ...args: any[]) => {
 
   const jikanClient = new JikanClient();
   let response: JikanResponse<Anime[]>;
-
   response = await (jikanClient[objectName][methodName] as (...args: any[]) => Promise<JikanResponse<Anime[]>>)(...args);
 
   const data = response.data;
@@ -33,6 +35,21 @@ export type AnimeShow = {
 export default function AnimeList(props: any) {
   const [local, others] = splitProps(props, ['animeList', 'isUserList', 'isRanked']);
 
+
+  const [adding, { Form }, ] = createServerAction$(async (form: FormData, { request }, ) => {
+
+    const ratingVal = form.get('rating');
+    let animeString = form.get('anime');
+    if (!ratingVal || !animeString) return;
+    const rating = +ratingVal;
+    const anime = JSON.parse(animeString as string) as AnimeShow;
+    await addAnimeToUserList({
+      title: anime.title, score: anime.score,
+      image_url: anime.image_url,
+      rating: rating
+    }, request);
+  });
+
   return (
     <>
       <table class="anime-table">
@@ -50,24 +67,44 @@ export default function AnimeList(props: any) {
               <b>Title</b>
             </th>
             <Show when={local.isUserList}
-              fallback={<th><b>Score</b></th>}>
+              fallback={
+                <>
+                  <th><b>Score</b></th>
+                  <th><b>Add Anime</b></th>
+                </>
+              }>
               <th><b>Rating</b></th>
             </Show>
           </tr>
           <For each={local.animeList}>
-            {(anime, i) => (
+            {(anime: AnimeShow, i) => (
               <tr class="animelist-item-container">
                 <Show when={local.isRanked || local.isUserList}>
                   <td class="ranking" >
-                        {i() + 1}
-                    </td>
+                    {i() + 1}
+                  </td>
                 </Show>
                 <td><img src={anime.image_url} alt={anime.title} /></td>
                 <td><p>{anime.title}</p></td>
                 <Show when={local.isUserList}
-                  fallback={<td>{anime.score}</td>}>
+                  fallback={
+                    <>
+                      <td>{anime.score}</td>
+                      <td>
+                        <Form>
+                          <label for="rating">Rating (1-10):</label>
+                          <input type="number" name="rating" value="10" min="1" max="10" />
+                          <input type="hidden" name="anime" value={JSON.stringify(anime) } />
+                          <button type="submit" disabled={adding.pending}>
+                            Add
+                          </button>
+                        </Form>
+                      </td>
+                    </>
+                  }>
                   <td>{anime.rating}</td>
                 </Show>
+
               </tr>
             )}
           </For>

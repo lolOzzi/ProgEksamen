@@ -19,7 +19,7 @@ export const useUserList = () =>
   createServerData$(async (_, { request }) => {
     const db = new PrismaClient();
     const user = await getUser(db, request);
-
+    
     if (!user) {
       throw redirect("/login");
     }
