@@ -23,22 +23,21 @@ export default function Home() {
   
   createMemo( async () => {
     const data = await userList()?.anime;
-    let Reccomendations = [];
+    let Reccomendations: AnimeShow[] = [];
     if (data !== undefined) {
         for (let i = 0; i < data.length; i++) {
             if (data[i].rating === 10) {
                 await getReccomendations(data[i].mal_id).then((res) => {
                     Reccomendations.push(res[0]);
                     Reccomendations.push(res[1]);
-                }	);
-
+                });
             }
             if (Reccomendations.length === 6) {
                 break;
             }
         }
-    }
-    setAniList(data);
+    }z
+    setAniList(Reccomendations);
   });
 
   
