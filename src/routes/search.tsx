@@ -1,6 +1,6 @@
 import { createResource, createSignal, onMount, ResourceActions, ResourceReturn } from "solid-js";
 import { refetchRouteData, useLocation, useSearchParams, useRouteData } from "solid-start";
-import { useUser } from "../db/useUserData";
+import { useUser } from "../models/useUserData";
 import ListComp from "../components/AnimeList";
 
 import { AnimeShow, getAnimeList } from '../components/AnimeList';

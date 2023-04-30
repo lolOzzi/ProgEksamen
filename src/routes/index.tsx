@@ -1,7 +1,7 @@
 import { refetchRouteData, useRouteData } from "solid-start";
 import { createServerAction$ } from "solid-start/server";
-import { logout } from "~/db/session";
-import { useUser } from "../db/useUserData";
+import { logout } from "~/models/session";
+import { useUser } from "../models/useUserData";
 import Slider from "../components/slider";
 import { getAnimeList, AnimeShow } from "../components/AnimeList";
 import { createResource, createSignal, onMount } from "solid-js";

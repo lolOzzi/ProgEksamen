@@ -1,6 +1,6 @@
 import "./navbar.css";
 import { createSignal, Signal } from 'solid-js';
-import { useUser } from "../db/useUserData";
+import { useUser } from "../models/useUserData";
 import { useLocation } from "solid-start";
 
 

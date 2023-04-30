@@ -1,4 +1,4 @@
-import { useUser, useUserList } from "~/db/useUserData";
+import { useUser, useUserList } from "~/models/useUserData";
 import { useRouteData } from "solid-start";
 import AnimeList, { AnimeShow} from "~/components/AnimeList";
 import { createEffect, createMemo, createSignal, Resource } from "solid-js";
@@ -15,6 +15,7 @@ export const userAnimeList = async (list: Resource<{
 
   return list()?.anime.map((anime) => {
     return {
+      mal_id: anime.mal_id,
       title: anime.title,
       score: anime.score,
       image_url: anime.image_url,
@@ -28,12 +29,12 @@ export default function Home() {
   const userList = userData.list;
   const user = userData.user;
   const [aniList, setAniList] = createSignal<AnimeShow[] | undefined>([]);
-  createMemo( () => userAnimeList(userList)); // dont remove this line
-
-  createEffect(async () => {
+  
+  createMemo( async () => {
     const data = await userAnimeList(userList);
     setAniList(data);
   });
+
   
   function getSortedList() {
     const tempList = aniList();

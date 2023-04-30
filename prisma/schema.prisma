@@ -19,6 +19,7 @@ model User {
 
 model Anime {
   id        Int  @id @default(autoincrement())
+  mal_id    String
   title     String
   image_url String
   score     Float

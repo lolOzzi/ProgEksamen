@@ -3,7 +3,7 @@ import { JikanClient, JikanResponse, Anime, AnimeClient } from '@tutkli/jikan-ts
 import { clientOnly } from 'solid-start/islands';
 import { unstable_clientOnly } from 'solid-start';
 import "./AnimeList.css";
-import { addAnimeToUserList } from '~/db/session';
+import { addAnimeToUserList } from '~/models/session';
 import { createServerAction$ } from 'solid-start/server';
 import { Form } from 'solid-start/data/Form';
 
@@ -17,6 +17,7 @@ export const getAnimeList = async <T extends keyof JikanClient>(objectName: T, m
   const theShows = data.map((anime: any) => {
     //console.log(anime.title);
     return {
+      mal_id: anime.mal_id,
       title: anime.title,
       score: anime.score,
       image_url: anime.images.webp.image_url,
@@ -26,6 +27,7 @@ export const getAnimeList = async <T extends keyof JikanClient>(objectName: T, m
 }
 
 export type AnimeShow = {
+  mal_id: number;
   title: string;
   score: number;
   image_url: string;
@@ -44,6 +46,7 @@ export default function AnimeList(props: any) {
     const rating = +ratingVal;
     const anime = JSON.parse(animeString as string) as AnimeShow;
     await addAnimeToUserList({
+      mal_id: anime.mal_id,
       title: anime.title, score: anime.score,
       image_url: anime.image_url,
       rating: rating
