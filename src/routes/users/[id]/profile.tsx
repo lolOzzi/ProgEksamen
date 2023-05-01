@@ -1,6 +1,6 @@
 import { useUser, useUserList } from "~/models/useUserData";
 import { useRouteData } from "solid-start";
-import AnimeList, { AnimeShow} from "~/components/AnimeList";
+import AnimeList, { AnimeShow} from "~/views/AnimeList";
 import { createEffect, createMemo, createSignal, Resource } from "solid-js";
 import { Anime, List } from ".prisma/client";
 

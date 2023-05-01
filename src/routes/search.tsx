@@ -1,20 +1,33 @@
-import { createResource, createSignal, onMount, ResourceActions, ResourceReturn } from "solid-js";
+import { createMemo, createResource, createSignal, onMount, ResourceActions, ResourceReturn } from "solid-js";
 import { refetchRouteData, useLocation, useSearchParams, useRouteData } from "solid-start";
-import { useUser } from "../models/useUserData";
-import ListComp from "../components/AnimeList";
+import { useUser, useUserList } from "../models/useUserData";
+import ListComp from "../views/AnimeList";
 
-import { AnimeShow, getAnimeList } from '../components/AnimeList';
+import { AnimeShow, getAnimeList } from '../views/AnimeList';
+import { userAnimeList } from "./users/[id]/profile";
+
+
+export function routeData() {
+  return useUserList();
+}
+
 
 export default function Home() {
 
   const [animeList, setAnimeList] = createSignal<AnimeShow[] | undefined>(undefined);
   const [searchParams, setSearchParams] = useSearchParams();
+  
+  const [userAniList, setUserAniList] = createSignal<AnimeShow[] | undefined>([]);
+  const userList = useRouteData<typeof routeData>()
 
 
   onMount(async () => {
     if (searchParams.q) {
       console.log("searching for: ", searchParams.q);
-      const theShows = await getAnimeList("anime", "getAnimeSearch", { q: searchParams.q });
+      const termAnimeSearch = await getAnimeList("anime", "getAnimeSearch", { q: searchParams.q, order_by: "members"});
+      const letterAnimeSearch = await getAnimeList("anime", "getAnimeSearch", { letter: searchParams.q, order_by: "members" });
+      let theShows = termAnimeSearch.concat(letterAnimeSearch).filter((show, index, self) => index === self.findIndex((s) => (s.mal_id === show.mal_id)));
+      theShows.sort((a, b) => (a.members! < b.members!) ? 1 : -1);
       setAnimeList(theShows);
     } else {
       const theShows = await getAnimeList("top", "getTopAnime");
@@ -23,10 +36,18 @@ export default function Home() {
 
   });
 
+  createMemo( async () => {
+    const data = await userAnimeList(userList);
+    setUserAniList(data);
+  });
+
+
   const handleSearch = async () => {
     console.log("searching for: ", searchParams.q);
-    const theShows = await getAnimeList("anime", "getAnimeSearch", { q: searchParams.q });
-
+    const termAnimeSearch = await getAnimeList("anime", "getAnimeSearch", { q: searchParams.q, order_by: "members"});
+    const letterAnimeSearch = await getAnimeList("anime", "getAnimeSearch", { letter: searchParams.q, order_by: "members" });
+    const theShows = termAnimeSearch.concat(letterAnimeSearch).filter((show, index, self) => index === self.findIndex((s) => (s.mal_id === show.mal_id)));
+    theShows.sort((a, b) => (a.members! < b.members!) ? 1 : -1);
     setAnimeList(theShows);
 
   };
@@ -41,7 +62,7 @@ export default function Home() {
         </div>
       </div>
       <div class="list-container">
-        <ListComp animeList={animeList()} />
+        <ListComp animeList={animeList()} userList={userAniList()} />
       </div>
       <button onClick={() => refetchRouteData()}>Refresh</button>
       <style>

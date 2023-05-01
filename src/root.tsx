@@ -13,7 +13,7 @@ import {
   Title,
 } from "solid-start";
 import "./root.css";
-import NavBar from "./components/navbar";
+import NavBar from "./views/navbar";
 
 export default function Root() {
   return (

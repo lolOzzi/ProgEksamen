@@ -15,12 +15,12 @@ export const getAnimeList = async <T extends keyof JikanClient>(objectName: T, m
 
   const data = response.data;
   const theShows = data.map((anime: any) => {
-    //console.log(anime.title);
     return {
       mal_id: anime.mal_id,
       title: anime.title,
       score: anime.score,
       image_url: anime.images.webp.image_url,
+      members: anime.members,
     } as AnimeShow;
   });
   return theShows;
@@ -32,6 +32,7 @@ export type AnimeShow = {
   score: number;
   image_url: string;
   rating?: string;
+  members?: number;
 };
 
 export default function AnimeList(props: any) {
@@ -46,29 +47,20 @@ export default function AnimeList(props: any) {
       mal_id: anime.mal_id,
       title: anime.title, score: anime.score,
       image_url: anime.image_url,
-      rating: rating
+      rating: rating,
     }, request);
   });
 
-  const [userList, setUserList] = createSignal<any>([]);
-  
-  createMemo( async () => {
-    const data = await local.userList;
-    setUserList(data);
-  });
 
-  
-
-  function checkAdded(id: number) {
-    
-    const res = userList()?.anime.forEach((anime: AnimeShow) => {
+  const checkAdded =  (id: number) => {
+    let res = undefined;
+    local.userList?.forEach((anime: AnimeShow) => {
       if (anime.mal_id === id) {
-        return [true, anime.rating];
+        res = anime.rating
       }
     });
-    console.log("the id" + id + "res" + res)
     if (!res)
-      return [false, undefined];
+      return undefined;
     return res;
   };
 
@@ -114,11 +106,11 @@ export default function AnimeList(props: any) {
                       <td>{anime.score}</td>
                       <td>
 
-                        <Show when={!checkAdded(anime.mal_id)[0]}
+                        <Show when={!checkAdded(anime.mal_id)}
                           fallback={
                             <>
                              <p>Added</p>
-                             <p>Your rating: {checkAdded(anime.mal_id)[1]}</p>
+                             <p>Your rating: {checkAdded(anime.mal_id)}</p>
                             </>
                           }>
                           <Form>

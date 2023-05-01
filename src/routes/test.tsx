@@ -4,7 +4,7 @@ import { createResource, createSignal, resetErrorBoundaries, Signal } from "soli
 import { useRouteData } from "solid-start";
 import { Form } from "solid-start/data/Form";
 import server$, { createServerAction$ } from "solid-start/server";
-import AnimeList, { AnimeShow, getAnimeList } from "~/components/AnimeList";
+import AnimeList, { AnimeShow, getAnimeList } from "~/views/AnimeList";
 import { addAnimeToUserList } from "~/models/session";
 import { useUser, useUserList } from "~/models/useUserData";
 
