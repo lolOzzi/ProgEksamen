@@ -8,6 +8,7 @@ type LoginForm = {
   password: string;
 };
 type AnimeForm = {
+  mal_id: number;
   title: string;
   score: number;
   image_url: string;
@@ -90,7 +91,7 @@ export async function getUserList(userId: string) {
   return list;
 }
 
-export async function addAnimeToUserList({title, score, image_url, rating}: AnimeForm, request: Request) {
+export async function addAnimeToUserList({mal_id, title, score, image_url, rating}: AnimeForm, request: Request) {
   const userId = await getUserId(request);
   if (!userId) return null;
   let list = await getUserList(userId);
@@ -103,7 +104,8 @@ export async function addAnimeToUserList({title, score, image_url, rating}: Anim
   }
   console.log("list" + list);
   const anime = await db.anime.create({
-    data: { 
+    data: {
+      mal_id: mal_id,
       title: title,
       score: score,
       image_url: image_url,

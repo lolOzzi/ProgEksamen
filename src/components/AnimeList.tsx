@@ -35,11 +35,8 @@ export type AnimeShow = {
 };
 
 export default function AnimeList(props: any) {
-  const [local, others] = splitProps(props, ['animeList', 'isUserList', 'isRanked']);
-
-
-  const [adding, { Form }, ] = createServerAction$(async (form: FormData, { request }, ) => {
-
+  const [local, others] = splitProps(props, ['animeList', 'userList', 'isUserList', 'isRanked']);
+  const [adding, { Form },] = createServerAction$(async (form: FormData, { request },) => {
     const ratingVal = form.get('rating');
     let animeString = form.get('anime');
     if (!ratingVal || !animeString) return;
@@ -52,6 +49,18 @@ export default function AnimeList(props: any) {
       rating: rating
     }, request);
   });
+
+  const checkAdded = (id: number) => {
+    const res = local.userList?.anime.forEach((anime: AnimeShow) => {
+      if (anime.mal_id === id) {
+        return [true, anime.rating];
+      }
+    });
+    console.log("the id" + id + "res" + res)
+    if (!res)
+      return [false, undefined];
+    return res;
+  };
 
   return (
     <>
@@ -94,14 +103,23 @@ export default function AnimeList(props: any) {
                     <>
                       <td>{anime.score}</td>
                       <td>
-                        <Form>
-                          <label for="rating">Rating (1-10):</label>
-                          <input type="number" name="rating" value="10" min="1" max="10" />
-                          <input type="hidden" name="anime" value={JSON.stringify(anime) } />
-                          <button type="submit" disabled={adding.pending}>
-                            Add
-                          </button>
-                        </Form>
+
+                        <Show when={!checkAdded(anime.mal_id)[0]}
+                          fallback={
+                            <>
+                            <p>Added</p>
+                             <p>Your rating: {checkAdded(anime.mal_id)[1]}</p>
+                            </>
+                          }>
+                          <Form>
+                            <label for="rating">Rating (1-10):</label>
+                            <input type="number" name="rating" value="10" min="1" max="10" />
+                            <input type="hidden" name="anime" value={JSON.stringify(anime)} />
+                            <button type="submit" disabled={adding.pending}>Add</button>
+                          </Form>
+                        </Show>
+
+
                       </td>
                     </>
                   }>
