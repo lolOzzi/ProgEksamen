@@ -1,4 +1,4 @@
-import { createEffect, For, Show, splitProps } from 'solid-js';
+import { createEffect, createMemo, createSignal, For, Show, splitProps } from 'solid-js';
 import { JikanClient, JikanResponse, Anime, AnimeClient } from '@tutkli/jikan-ts';
 import { clientOnly } from 'solid-start/islands';
 import { unstable_clientOnly } from 'solid-start';
@@ -50,8 +50,18 @@ export default function AnimeList(props: any) {
     }, request);
   });
 
-  const checkAdded = (id: number) => {
-    const res = local.userList?.anime.forEach((anime: AnimeShow) => {
+  const [userList, setUserList] = createSignal<any>([]);
+  
+  createMemo( async () => {
+    const data = await local.userList;
+    setUserList(data);
+  });
+
+  
+
+  function checkAdded(id: number) {
+    
+    const res = userList()?.anime.forEach((anime: AnimeShow) => {
       if (anime.mal_id === id) {
         return [true, anime.rating];
       }
@@ -107,7 +117,7 @@ export default function AnimeList(props: any) {
                         <Show when={!checkAdded(anime.mal_id)[0]}
                           fallback={
                             <>
-                            <p>Added</p>
+                             <p>Added</p>
                              <p>Your rating: {checkAdded(anime.mal_id)[1]}</p>
                             </>
                           }>
