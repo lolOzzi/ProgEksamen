@@ -2,3 +2,26 @@
     width: 20vh;
     background: blue;
 }
+
+.home-title {
+    display: block;
+    text-align: center;
+    margin: 1em;
+    margin-top: 0;
+    padding-top: 0;
+
+}
+.home-container {
+    margin-top: 1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.home-main {
+    margin-top: 2em;
+    width: max-content;
+    padding: 1em;
+    padding-inline: 2em;
+}

@@ -64,3 +64,11 @@ button[type='submit'] {
 .full-width {
   width: 100%;
 }
+
+.page-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: large;
+}

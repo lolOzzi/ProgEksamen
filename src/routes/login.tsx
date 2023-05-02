@@ -8,6 +8,7 @@ import {
 } from "solid-start/server";
 import { db } from "~/models";
 import { createUserSession, getUser, login, register } from "~/models/session";
+import './login.css'
 
 function validateUsername(username: unknown) {
   if (typeof username !== "string" || username.length < 3) {
@@ -92,45 +93,48 @@ export default function Login() {
   });
 
   return (
-    <main>
-      <h1>Login</h1>
-      <Form class="login-form">
-        <input
-          type="hidden"
-          name="redirectTo"
-          value={params.redirectTo ?? "/"}
-        />
-        <fieldset>
-          <legend>Login or Register?</legend>
-          <label>
-            <input type="radio" name="loginType" value="login" checked={true} />{" "}
-            Login
-          </label>
-          <label>
-            <input type="radio" name="loginType" value="register" /> Register
-          </label>
-        </fieldset>
-        <div>
-          <label for="username-input">Username</label>
-          <input name="username" placeholder="kody" />
-        </div>
-        <Show when={loggingIn.error?.fieldErrors?.username}>
-          <p class="alert" role="alert">{loggingIn.error.fieldErrors.username}</p>
-        </Show>
-        <div>
-          <label for="password-input">Password</label>
-          <input name="password" type="password" placeholder="twixrox" />
-        </div>
-        <Show when={loggingIn.error?.fieldErrors?.password}>
-          <p class="alert"  role="alert">{loggingIn.error.fieldErrors.password}</p>
-        </Show>
-        <Show when={loggingIn.error}>
-          <p class="alert"  role="alert" id="error-message">
-            {loggingIn.error.message}
-          </p>
-        </Show>
-        <button type="submit">{data() ? "Login" : ""}</button>
-      </Form>
+    <main class="login-main">
+
+      <div class="login-container">
+        <h1 class="login-title">Login</h1>
+        <Form class="login-form">
+          <input
+            type="hidden"
+            name="redirectTo"
+            value={params.redirectTo ?? "/"}
+          />
+          <fieldset>
+            <legend>Login or Register?</legend>
+            <label>
+              <input type="radio" name="loginType" value="login" checked={true} />{" "}
+              Login
+            </label>
+            <label>
+              <input type="radio" name="loginType" value="register" /> Register
+            </label>
+          </fieldset>
+          <div>
+            <label for="username-input">Username</label>
+            <input name="username" placeholder="rin" />
+          </div>
+          <Show when={loggingIn.error?.fieldErrors?.username}>
+            <p class="alert" role="alert">{loggingIn.error.fieldErrors.username}</p>
+          </Show>
+          <div>
+            <label for="password-input">Password&#x200B;</label>
+            <input name="password" type="password" placeholder="tohsaka" />
+          </div>
+          <Show when={loggingIn.error?.fieldErrors?.password}>
+            <p class="alert" role="alert">{loggingIn.error.fieldErrors.password}</p>
+          </Show>
+          <Show when={loggingIn.error}>
+            <p class="alert" role="alert" id="error-message">
+              {loggingIn.error.message}
+            </p>
+          </Show>
+          <button type="submit">{data() ? "Login" : ""}</button>
+        </Form>
+      </div>
     </main>
   );
 }

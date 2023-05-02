@@ -22,9 +22,8 @@ export default function Home() {
 
   const [userAniList, setUserAniList] = createSignal<AnimeShow[] | undefined>([]);
   createMemo( async () => {
-
-    const theShows = await getAnimeList("top", "getTopAnime");
-    setAnimeList(theShows);
+    const data = await userAnimeList(userList);
+    setUserAniList(data);
 
   });
 

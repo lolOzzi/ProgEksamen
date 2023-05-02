@@ -1,0 +1,23 @@
+.login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+}
+
+.login-main {
+    margin-top: 4em;
+    width: max-content;
+    padding: 1em;
+    padding-inline: 2em;
+}
+
+.login-container > * > * > label {
+    margin: 0.5em;
+}
+
+.login-title {
+    padding-bottom: 1em;
+}

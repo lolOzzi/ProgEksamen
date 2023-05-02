@@ -8,6 +8,8 @@ import { createResource, createSignal, onMount } from "solid-js";
 import { clientOnly } from "solid-start/islands";
 import { AnimeSeason } from "@tutkli/jikan-ts";
 
+import './index.css';
+
 export function routeData() {
   return useUser();
 }
@@ -34,8 +36,9 @@ export default function Home() {
 
 
   return (
-    <main class="full-width">
-      <h1>Home</h1>
+    <main class="home-main">
+      <h1 class="home-title">Home</h1>
+      <div class="home-container">
       <h3>Top Anime</h3>
       <Slider animeList={topAnimeList()}/>
       <h3>Current Season Anime</h3>
@@ -48,10 +51,7 @@ export default function Home() {
           Logout
         </button>
       </Form>
-      <script>
-
-
-      </script>
+      </div>
     </main>
 
 
