@@ -2,7 +2,6 @@
     display: block;
     text-align: center;
     margin: 1em;
-    padding-top: 2.5em;
 
 }
 .list-container {
@@ -11,4 +10,27 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.title-container {
+    margin-top: 2em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #262626;
+    color: white;
+    padding-inline: 2em;
+    border-radius: 30px;
+
+}
+
+.title-main {
+    margin-top:  2em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }

@@ -17,8 +17,8 @@ function validateUsername(username: unknown) {
 }
 
 function validatePassword(password: unknown) {
-  if (typeof password !== "string" || password.length < 6) {
-    return `Passwords must be at least 6 characters long`;
+  if (typeof password !== "string" || password.length < 8) {
+    return `Passwords must be at least 8 characters long`;
   }
 }
 
@@ -115,14 +115,14 @@ export default function Login() {
           </fieldset>
           <div>
             <label for="username-input">Username</label>
-            <input name="username" placeholder="rin" />
+            <input name="username" placeholder="user" />
           </div>
           <Show when={loggingIn.error?.fieldErrors?.username}>
             <p class="alert" role="alert">{loggingIn.error.fieldErrors.username}</p>
           </Show>
           <div>
-            <label for="password-input">Password&#x200B;</label>
-            <input name="password" type="password" placeholder="tohsaka" />
+            <label for="password-input">Password</label>
+            <input name="password" type="password" placeholder="password" />
           </div>
           <Show when={loggingIn.error?.fieldErrors?.password}>
             <p class="alert" role="alert">{loggingIn.error.fieldErrors.password}</p>

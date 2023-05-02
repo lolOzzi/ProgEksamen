@@ -8,8 +8,10 @@ export const useUser = () =>
     const db = new PrismaClient();
     const user = await getUser(db, request);
 
-    if (!user) {
+    if (!user && request.url !== "/login") {
       throw redirect("/login");
+    } else if (user && request.url === "/login") {
+      return undefined;
     }
 
     return user;

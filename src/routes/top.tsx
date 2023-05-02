@@ -27,20 +27,15 @@ export default function Home() {
 
   });
 
-  return (
-    <main class="full-width">
-      <h1 class="list-title">Top Anime</h1>
-      <div class="list-container">
-        <Show when={userAniList() !== undefined} fallback={
-          <div class="loading">
-            <p>loading...</p>
-          </div>
-        }>
-        <ListComp animeList={animeList()} userList={userAniList()} isRanked="true" />
-          </Show>
 
+  return (
+    <main class="full-width title-main">
+      <div class="title-container">
+        <h1 class="list-title">Top Anime</h1>
       </div>
-      <button onClick={() => refetchRouteData()}>Refresh</button>
+      <div class="list-container">
+        <ListComp animeList={animeList()} userList={userAniList()} isRanked="true" />
+      </div>
     </main>
 
   );

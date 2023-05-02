@@ -55,15 +55,20 @@ export default function Home() {
 
 
 	return (
-		<main class="full-width">
-			<h1>{user()?.username + "'s Reccomendations"}</h1>
-			<Show when={aniList()} fallback={<div><h2 style="font-size:1.5rem;">loading...</h2></div>}>
-				<Show when={aniList()?.length != 0} fallback={
-					<div><h2 style="font-size:1.5rem;">Try adding some anime first!</h2></div>
-				}>
-					<AnimeList animeList={aniList()}/>
+		<main class="full-width title-main">
+			<div class="title-container">
+				<h1 class="list-title">{user()?.username + "'s Reccomendations"}</h1>
+			</div>
+
+			<div class="list-container">
+				<Show when={aniList()} fallback={<div><h2 style="font-size:1.5rem;">loading...</h2></div>}>
+					<Show when={aniList()?.length != 0} fallback={
+						<div><h2 style="font-size:1.5rem;">Try adding some anime first!</h2></div>
+					}>
+						<AnimeList animeList={aniList()} />
+					</Show>
 				</Show>
-			</Show>
+			</div>
 
 
 		</main>

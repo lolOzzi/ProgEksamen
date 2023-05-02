@@ -32,12 +32,13 @@ export default function Home() {
   });
 
   return (
-    <main class="full-width">
-      <h1 class="list-title">Most Popular Anime</h1>
+    <main class="full-width title-main">
+      <div class="title-container">
+        <h1 class="list-title">Most Popular Anime</h1>
+      </div>
       <div class="list-container">
           <ListComp animeList={animeList()} userList={userAniList()} />
       </div>
-      <button onClick={() => refetchRouteData()}>Refresh</button>
     </main>
 
   );

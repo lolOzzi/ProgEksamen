@@ -3,6 +3,9 @@ import { useRouteData } from "solid-start";
 import AnimeList, { AnimeShow} from "~/views/AnimeList";
 import { createEffect, createMemo, createSignal, Resource } from "solid-js";
 import { Anime, List } from ".prisma/client";
+import { Form } from "solid-start/data/Form";
+import { createServerAction$ } from "solid-start/server";
+import { logout } from "~/models/session";
 
 export function routeData() {
   return {list: useUserList(), user: useUser()};
@@ -29,6 +32,11 @@ export default function Home() {
   const userList = userData.list;
   const user = userData.user;
   const [aniList, setAniList] = createSignal<AnimeShow[] | undefined>([]);
+
+  const [, { Form }] = createServerAction$((f: FormData, { request }) =>
+    logout(request)
+  );
+
   
   createMemo( async () => {
     const data = await userAnimeList(userList);
@@ -45,9 +53,19 @@ export default function Home() {
     }
   }
   return (
-    <main class="full-width">
-      <h1>{user()?.username + "'s profile"}</h1>
-      <AnimeList animeList={getSortedList()} isUserList="true" />
+    <main class="full-width title-main">
+      <div class="title-container">
+        <h1 class="list-title">{user()?.username + "'s profile"}</h1>
+      </div>
+      <Form>
+        <button name="logout" type="submit">
+          Logout
+        </button>
+      <h2 class="list-title" style="color:#252526;">Your Anime List</h2>
+      </Form>
+      <div class="list-container">
+        <AnimeList animeList={getSortedList()} isUserList="true" />
+      </div>
     </main>
   );
 }

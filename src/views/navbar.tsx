@@ -1,18 +1,18 @@
 import "./navbar.css";
-import { createSignal, Signal } from 'solid-js';
+import { createEffect, createSignal, Signal } from 'solid-js';
 import { useUser } from "../models/useUserData";
 import { useLocation } from "solid-start";
-
+import { sleep } from "~/utils/helper";
 
 
 export default function NavBar() {
     const [query, setQuery] = createSignal("");
     let [username, setUsername] = createSignal("Login") as Signal<string | undefined>;
+
     if (!useLocation().pathname.includes("login")) {
         const user = useUser();
         setUsername(user()?.username);
     }
-
 
     return (
         <div class="nav-container">
