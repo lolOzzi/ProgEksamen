@@ -7,7 +7,7 @@ li {
 a {
     display: block;
     padding: 10px;
-    background-color: #dddddd;
+    background-color: rgb(63, 145, 231);
     text-decoration: none;
     color: black;
 }
@@ -20,7 +20,7 @@ ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    background-color: rgb(0, 63, 117);
+    background-color: #004784;
     align-items: center;
     display: flex;
     padding-inline: 10px;
@@ -57,7 +57,7 @@ ul {
 /* Dropdown button on hover & focus */
 .dropbtn:hover,
 .dropbtn:focus {
-    background-color: #3e8e41;
+    background-color: white;
 }
 
 /* The container <div> - needed to position the dropdown content */
@@ -93,7 +93,7 @@ ul {
 
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {
-    background-color: #3e8e41;
+    background-color: white;
 }
 
 /* Add a down arrow */
@@ -102,4 +102,9 @@ ul {
     font-size: 12px;
     color: black;
     margin-left: 5px;
+}
+
+.logo-link{
+    text-decoration: none;
+    background-color: transparent;
 }

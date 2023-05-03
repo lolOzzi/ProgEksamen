@@ -102,7 +102,6 @@ export async function addAnimeToUserList({mal_id, title, score, image_url, ratin
       },
     })
   }
-  console.log("list" + list);
   const anime = await db.anime.create({
     data: {
       mal_id: mal_id,
@@ -115,7 +114,6 @@ export async function addAnimeToUserList({mal_id, title, score, image_url, ratin
       rating: rating,
     },
   });
-  console.log("anime" + anime)
   return anime; 
 }
 

@@ -1,5 +1,5 @@
 import "./navbar.css";
-import { createEffect, createSignal, Signal } from 'solid-js';
+import { createEffect, createSignal, Show, Signal } from 'solid-js';
 import { useUser } from "../models/useUserData";
 import { useLocation } from "solid-start";
 import { sleep } from "~/utils/helper";
@@ -7,17 +7,21 @@ import { sleep } from "~/utils/helper";
 
 export default function NavBar() {
     const [query, setQuery] = createSignal("");
-    let [username, setUsername] = createSignal("Login") as Signal<string | undefined>;
-
-    if (!useLocation().pathname.includes("login")) {
-        const user = useUser();
-        setUsername(user()?.username);
-    }
+    const [username, setUsername] = createSignal("Login") as Signal<string | undefined>;
+    const user = useUser();
+    const location = useLocation();
+    
+    const getUsername = () => {
+        if (!location.pathname.includes("login")) {
+            return user()?.username || "Login";
+        }
+        return "Login";
+    };
 
     return (
         <div class="nav-container">
             <ul class="navbar">
-                <li><img src="/images/logo.svg" width="250px" height="52" style="display:block;" /></li>
+                <li><a href="/" class="logo-link"><img src="/images/logo.svg" width="250px" height="52" style="display:block;" /></a></li>
                 <li><a href="/">Home</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropbtn">Anime</a>
@@ -32,7 +36,12 @@ export default function NavBar() {
                     <input id="nav-search-box" type="text" value={query()} onInput={(evt) => setQuery(evt.currentTarget.value)} />
                 </li>
                 <li><a class="nav-search-button" href={"/search?q=" + query()}>Search</a></li>
-                <li class="profile"><a href={username() ? "/users/" + username() + "/profile" : "/login"}>{username() ? username() : "Not logged in"}</a></li>
+                <Show when={getUsername() != "Login"} fallback={
+                    <li class="profile"><a href={"/login"}>{"Login"}</a></li>
+                }>
+                <li class="profile"><a href={"/users/" + getUsername() + "/profile"}>{getUsername()}</a></li>
+                </Show>
+                
             </ul>
         </div>
     )
