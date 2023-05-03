@@ -16,11 +16,11 @@ export const getAnimeList = async <T extends keyof JikanClient>(objectName: T, m
 
   for (let i = 0; i < MAX_RETRIES; i++) {
     try {
-      response = await (jikanClient[objectName][methodName] as ( ...args: any[]) => Promise<JikanResponse<Anime[]>>)(...args);
-      break; 
+      response = await (jikanClient[objectName][methodName] as (...args: any[]) => Promise<JikanResponse<Anime[]>>)(...args);
+      break;
     } catch (error) {
       console.log(`Request failed, retrying (${i + 1}/${MAX_RETRIES})...`);
-      await sleep(666*(i+1));
+      await sleep(666 * (i + 1));
     }
   }
   if (response.data === undefined) {
@@ -32,6 +32,7 @@ export const getAnimeList = async <T extends keyof JikanClient>(objectName: T, m
       mal_id: anime.mal_id,
       title: anime.title,
       image_url: anime.images.webp.image_url,
+      score: anime.score,
       members: anime.members,
     } as AnimeShow;
   });
@@ -48,7 +49,7 @@ export type AnimeShow = {
 };
 
 export default function AnimeList(props: any) {
-  const [local, others] = splitProps(props, ['animeList', 'userList', 'isUserList', 'isRanked']);
+  const [local, others] = splitProps(props, ['animeList', 'userList', 'isUserList', 'isRanked', 'reccomendations']);
   const [adding, { Form },] = createServerAction$(async (form: FormData, { request },) => {
     const ratingVal = form.get('rating');
     let animeString = form.get('animeToAdd');
@@ -70,7 +71,7 @@ export default function AnimeList(props: any) {
   });
 
 
-  const checkAdded =  (id: number) => {
+  const checkAdded = (id: number) => {
     let res = undefined;
     local.userList?.forEach((anime: AnimeShow) => {
       if (anime.mal_id === id) {
@@ -101,7 +102,11 @@ export default function AnimeList(props: any) {
             <Show when={local.isUserList}
               fallback={
                 <>
-                  <th><b>Score</b></th>
+                  <Show when={!local.reccomendations} fallback={
+                    <th><b></b></th>
+                  }>
+                    <th><b>Score</b></th>
+                  </Show>
                   <th><b>Add Anime</b></th>
                 </>
               }>
@@ -123,34 +128,39 @@ export default function AnimeList(props: any) {
                     <>
                       <td>{anime.score}</td>
 
-                        <Show when={!checkAdded(anime.mal_id)}
-                          fallback={
-                            <>
+                      <Show when={!checkAdded(anime.mal_id)}
+                        fallback={
+                          <>
                             <td>
-                             <p>Added</p>
-                             <p>Your rating: {checkAdded(anime.mal_id)}</p>
-                             <Form>
-                              <input type="hidden" name="animeToRemove" value={anime.mal_id} />
-                              <button type="submit" disabled={adding.pending}>Remove</button>
-                            </Form>
+                              <p>Added</p>
+                              <p>Your rating: {checkAdded(anime.mal_id)}</p>
+                              <Form>
+                                <input type="hidden" name="animeToRemove" value={anime.mal_id} />
+                                <button type="submit" disabled={adding.pending}>Remove</button>
+                              </Form>
                             </td>
-                            </>
-                          }>                          
-                          <td>
+                          </>
+                        }>
+                        <td>
                           <Form>
                             <label for="rating">Rating (1-10):</label>
                             <input type="number" name="rating" value="10" min="1" max="10" />
                             <input type="hidden" name="animeToAdd" value={JSON.stringify(anime)} />
                             <button type="submit" disabled={adding.pending}>Add</button>
                           </Form>
-                          </td>
-                        </Show>
-
-  
-
+                        </td>
+                      </Show>
                     </>
                   }>
-                  <td>{anime.rating}</td>
+                  <>
+                    <td>{anime.rating}</td>
+                    <td>
+                      <Form>
+                        <input type="hidden" name="animeToRemove" value={anime.mal_id} />
+                        <button type="submit" disabled={adding.pending}>Remove</button>
+                      </Form>
+                    </td>
+                  </>
                 </Show>
 
               </tr>

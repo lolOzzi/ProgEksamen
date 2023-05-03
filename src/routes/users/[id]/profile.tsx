@@ -1,7 +1,7 @@
 import { useUser, useUserList } from "~/models/useUserData";
 import { useRouteData } from "solid-start";
 import AnimeList, { AnimeShow} from "~/views/AnimeList";
-import { createEffect, createMemo, createSignal, Resource } from "solid-js";
+import { createEffect, createMemo, createSignal, Resource, Show } from "solid-js";
 import { Anime, List } from ".prisma/client";
 import { Form } from "solid-start/data/Form";
 import { createServerAction$ } from "solid-start/server";
@@ -61,10 +61,15 @@ export default function Home() {
         <button name="logout" type="submit">
           Logout
         </button>
-      <h2 class="list-title" style="color:#252526;">Your Anime List</h2>
+      <h2 class="list-title" style="color:#252526; font-size:1.75rem; margin-top:2em;">Your Anime List</h2>
       </Form>
-      <div class="list-container">
-        <AnimeList animeList={getSortedList()} isUserList="true" />
+      <div class="list-container" style="margin-top:0.5em;">
+        <Show when={getSortedList()?.length != 0} fallback={
+          <div><h2 style="font-size:1.2rem;">Try adding some anime first!</h2></div>
+        }>
+          <AnimeList animeList={getSortedList()} isUserList="true" />
+        </Show>
+
       </div>
     </main>
   );

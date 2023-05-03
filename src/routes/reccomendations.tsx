@@ -93,7 +93,7 @@ export default function Home() {
 					<Show when={aniList()?.length != 0} fallback={
 						<div><h2 style="font-size:1.5rem;">Try adding some anime with a rating above 7 first!</h2></div>
 					}>
-						<AnimeList animeList={aniList()} userList={userAniList()} />
+						<AnimeList animeList={aniList()} userList={userAniList()} reccomendations={true} />
 					</Show>
 				</Show>
 			</div>
