@@ -10,7 +10,6 @@ type LoginForm = {
 type AnimeForm = {
   mal_id: number;
   title: string;
-  score: number;
   image_url: string;
   rating: number;
 }
@@ -91,7 +90,7 @@ export async function getUserList(userId: string) {
   return list;
 }
 
-export async function addAnimeToUserList({mal_id, title, score, image_url, rating}: AnimeForm, request: Request) {
+export async function addAnimeToUserList({mal_id, title, image_url, rating}: AnimeForm, request: Request) {
   const userId = await getUserId(request);
   if (!userId) return null;
   let list = await getUserList(userId);
@@ -106,7 +105,6 @@ export async function addAnimeToUserList({mal_id, title, score, image_url, ratin
     data: {
       mal_id: mal_id,
       title: title,
-      score: score,
       image_url: image_url,
       List: {
         connect: { id: list.id },
@@ -116,6 +114,25 @@ export async function addAnimeToUserList({mal_id, title, score, image_url, ratin
   });
   return anime; 
 }
+
+export async function removeAnimeFromUserList(mal_id: number, request: Request) {
+  const userId = await getUserId(request);
+  if (!userId) return null;
+  let list = await getUserList(userId);
+  if (!list) {
+    return null;
+  }
+  const anime = await db.anime.delete({
+    where: {
+      mal_id_listId: {
+        mal_id: mal_id,
+        listId: list.id,
+      }
+    },
+  });
+  return anime; 
+}
+
 
 
 export async function logout(request: Request) {

@@ -3,7 +3,7 @@ import { JikanClient, JikanResponse, Anime, AnimeClient } from '@tutkli/jikan-ts
 import { clientOnly } from 'solid-start/islands';
 import { unstable_clientOnly } from 'solid-start';
 import "./AnimeList.css";
-import { addAnimeToUserList } from '~/models/session';
+import { addAnimeToUserList, removeAnimeFromUserList } from '~/models/session';
 import { createServerAction$ } from 'solid-start/server';
 import { Form } from 'solid-start/data/Form';
 import { sleep } from '~/utils/helper';
@@ -31,7 +31,6 @@ export const getAnimeList = async <T extends keyof JikanClient>(objectName: T, m
     return {
       mal_id: anime.mal_id,
       title: anime.title,
-      score: anime.score,
       image_url: anime.images.webp.image_url,
       members: anime.members,
     } as AnimeShow;
@@ -52,13 +51,19 @@ export default function AnimeList(props: any) {
   const [local, others] = splitProps(props, ['animeList', 'userList', 'isUserList', 'isRanked']);
   const [adding, { Form },] = createServerAction$(async (form: FormData, { request },) => {
     const ratingVal = form.get('rating');
-    let animeString = form.get('anime');
-    if (!ratingVal || !animeString) return;
+    let animeString = form.get('animeToAdd');
+    let animeID = form.get('animeToRemove')
+    if ((!ratingVal || !animeString) && animeID) {
+      removeAnimeFromUserList(+animeID, request);
+      return;
+    } else if (!ratingVal || !animeString) {
+      return;
+    }
     const rating = +ratingVal;
     const anime = JSON.parse(animeString as string) as AnimeShow;
     await addAnimeToUserList({
       mal_id: anime.mal_id,
-      title: anime.title, score: anime.score,
+      title: anime.title,
       image_url: anime.image_url,
       rating: rating,
     }, request);
@@ -117,25 +122,32 @@ export default function AnimeList(props: any) {
                   fallback={
                     <>
                       <td>{anime.score}</td>
-                      <td>
 
                         <Show when={!checkAdded(anime.mal_id)}
                           fallback={
                             <>
+                            <td>
                              <p>Added</p>
                              <p>Your rating: {checkAdded(anime.mal_id)}</p>
+                             <Form>
+                              <input type="hidden" name="animeToRemove" value={anime.mal_id} />
+                              <button type="submit" disabled={adding.pending}>Remove</button>
+                            </Form>
+                            </td>
                             </>
-                          }>
+                          }>                          
+                          <td>
                           <Form>
                             <label for="rating">Rating (1-10):</label>
                             <input type="number" name="rating" value="10" min="1" max="10" />
-                            <input type="hidden" name="anime" value={JSON.stringify(anime)} />
+                            <input type="hidden" name="animeToAdd" value={JSON.stringify(anime)} />
                             <button type="submit" disabled={adding.pending}>Add</button>
                           </Form>
+                          </td>
                         </Show>
 
+  
 
-                      </td>
                     </>
                   }>
                   <td>{anime.rating}</td>

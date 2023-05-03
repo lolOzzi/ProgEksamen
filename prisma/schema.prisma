@@ -18,11 +18,11 @@ model User {
 }
 
 model Anime {
-  id        Int  @id @default(autoincrement())
+  @@id([mal_id, listId])
   mal_id    Int
   title     String
   image_url String
-  score     Float
+  score     Float?
   List      List @relation(fields: [listId], references: [id])
   listId    Int                       
   rating    Int  @default(0)
