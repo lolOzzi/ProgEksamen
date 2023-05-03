@@ -6,6 +6,7 @@ import { userAnimeList } from "~/routes/users/[id]/profile";
 import { JikanClient } from "@tutkli/jikan-ts";
 import { isServer } from "solid-js/web";
 import { sleep } from "~/utils/helper";
+import { BlockList } from "net";
 
 export function routeData() {
 	return { list: useUserList(), user: useUser() };
@@ -46,23 +47,20 @@ export default function Home() {
 	const user = userData.user;
 	const [aniList, setAniList] = createSignal<AnimeShow[] | undefined>();
 	const [userAniList, setUserAniList] = createSignal<AnimeShow[] | undefined>([]);
-	const [noRecc, setNoRecc] = createSignal<boolean>(false);
+	
 
 	createMemo(async () => {
-		const data = await userAnimeList(userList);
-		data?.sort((a, b) => (b.rating ? +b.rating : -Infinity) - (a.rating ? +a.rating : -Infinity));
-		if (data !== undefined)
-			setUserAniList(data);
-	});
-
-	createMemo(async () => {
-		setAniList(undefined);
-		let Reccomendations: AnimeShow[] | undefined = undefined;
-
+		let Reccomendations: AnimeShow[] | undefined = [];
+		const listData = await userAnimeList(userList);
+		listData?.sort((a, b) => (b.rating ? +b.rating : -Infinity) - (a.rating ? +a.rating : -Infinity));
+		if (listData !== undefined) {
+			setUserAniList(listData);
+		}
 		const data = userAniList();
 
 		if (data?.length !== 0 && data !== undefined) {
 			Reccomendations = [];
+			
 			for (let i = 0; i < data.length; i++) {
 				if (data[i].rating !== undefined && Number(data[i].rating) >= 7) {
 					await getReccomendations(data[i].mal_id).then((res) => {
@@ -79,7 +77,8 @@ export default function Home() {
 				}
 			}
 		}
-		setAniList(Reccomendations ? Reccomendations : undefined);
+		setAniList(Reccomendations);
+			
 	});
 
 
@@ -91,7 +90,7 @@ export default function Home() {
 
 			<div class="list-container">
 				<Show when={aniList()} fallback={<div><h2 style="font-size:1.5rem;">loading...</h2></div>}>
-					<Show when={aniList()?.length !== 0} fallback={
+					<Show when={aniList()?.length != 0} fallback={
 						<div><h2 style="font-size:1.5rem;">Try adding some anime with a rating above 7 first!</h2></div>
 					}>
 						<AnimeList animeList={aniList()} userList={userAniList()} />
