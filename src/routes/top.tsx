@@ -1,8 +1,8 @@
 import { createMemo, createResource, createSignal, onMount, ResourceActions, ResourceReturn, Show } from "solid-js";
 import { refetchRouteData, useRouteData } from "solid-start";
-import { useUser, useUserList } from "../models/useUserData";
-import ListComp from "../views/AnimeList";
-import { AnimeShow, getAnimeList } from '../views/AnimeList';
+import { useUser, useUserList } from "../models/getUserData";
+import AnimeList from "../views/AnimeList";
+import { AnimeShow, getAnimeList } from '../models/getAnimeData';
 import { userAnimeList } from "./users/[id]/profile";
 import { isServer } from "solid-js/web";
 
@@ -34,7 +34,7 @@ export default function Home() {
         <h1 class="list-title">Top Anime</h1>
       </div>
       <div class="list-container">
-        <ListComp animeList={animeList()} userList={userAniList()} isRanked="true" />
+        <AnimeList animeList={animeList()} userList={userAniList()} isRanked="true" />
       </div>
     </main>
 

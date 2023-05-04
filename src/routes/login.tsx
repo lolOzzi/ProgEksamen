@@ -8,7 +8,7 @@ import {
 } from "solid-start/server";
 import { db } from "~/models";
 import { createUserSession, getUser, login, register } from "~/models/session";
-import './login.css'
+import '~/views/page-css/login.css'
 
 function validateUsername(username: unknown) {
   if (typeof username !== "string" || username.length < 3) {

@@ -29,6 +29,7 @@ ul {
 .navbar {
     width: 80vw;
     border-radius: 5px;
+
 }
 
 .nav-container {
@@ -107,4 +108,12 @@ ul {
 .logo-link{
     text-decoration: none;
     background-color: transparent;
+}
+
+.nav-link:hover {
+    background-color: white;
+}
+
+.nav-link {
+    border-radius: 5px;
 }

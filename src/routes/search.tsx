@@ -1,9 +1,8 @@
 import { createMemo, createResource, createSignal, onMount, ResourceActions, ResourceReturn } from "solid-js";
 import { refetchRouteData, useLocation, useSearchParams, useRouteData } from "solid-start";
-import { useUser, useUserList } from "../models/useUserData";
-import ListComp from "../views/AnimeList";
-
-import { AnimeShow, getAnimeList } from '../views/AnimeList';
+import { useUser, useUserList } from "../models/getUserData";
+import AnimeList from "../views/AnimeList";
+import { AnimeShow, getAnimeList } from '../models/getAnimeData';
 import { userAnimeList } from "./users/[id]/profile";
 
 
@@ -23,10 +22,9 @@ export default function Home() {
 
   onMount(async () => {
     if (searchParams.q) {
-      console.log("searching for: ", searchParams.q);
       const termAnimeSearch = await getAnimeList("anime", "getAnimeSearch", { q: searchParams.q, order_by: "members"});
-      const letterAnimeSearch = await getAnimeList("anime", "getAnimeSearch", { letter: searchParams.q, order_by: "members" });
-      let theShows = termAnimeSearch.concat(letterAnimeSearch).filter((show, index, self) => index === self.findIndex((s) => (s.mal_id === show.mal_id)));
+      const letterAnimeSearch = await getAnimeList("anime", "getAnimeSearch", { letter: searchParams.q});
+      let theShows =termAnimeSearch.concat(letterAnimeSearch).filter((show, index, self) => index === self.findIndex((s) => (s.mal_id === show.mal_id)));
       theShows.sort((a, b) => (a.members! < b.members!) ? 1 : -1);
       setAnimeList(theShows);
     } else {
@@ -45,7 +43,7 @@ export default function Home() {
   const handleSearch = async () => {
     console.log("searching for: ", searchParams.q);
     const termAnimeSearch = await getAnimeList("anime", "getAnimeSearch", { q: searchParams.q, order_by: "members"});
-    const letterAnimeSearch = await getAnimeList("anime", "getAnimeSearch", { letter: searchParams.q, order_by: "members" });
+    const letterAnimeSearch = await getAnimeList("anime", "getAnimeSearch", { letter: searchParams.q});
     const theShows = termAnimeSearch.concat(letterAnimeSearch).filter((show, index, self) => index === self.findIndex((s) => (s.mal_id === show.mal_id)));
     theShows.sort((a, b) => (a.members! < b.members!) ? 1 : -1);
     setAnimeList(theShows);
@@ -64,7 +62,7 @@ export default function Home() {
         </div>
       </div>
       <div class="list-container">
-        <ListComp animeList={animeList()} userList={userAniList()} />
+        <AnimeList animeList={animeList()} userList={userAniList()} />
       </div>
       <style>
         {`

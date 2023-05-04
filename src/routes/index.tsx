@@ -1,14 +1,14 @@
 import { refetchRouteData, useRouteData } from "solid-start";
 import { createServerAction$ } from "solid-start/server";
 import { logout } from "~/models/session";
-import { useUser } from "../models/useUserData";
+import { useUser } from "../models/getUserData";
 import Slider from "../views/slider";
-import { getAnimeList, AnimeShow } from "../views/AnimeList";
+import { getAnimeList, AnimeShow } from "../models/getAnimeData";
 import { createResource, createSignal, onMount, Resource } from "solid-js";
 import { clientOnly } from "solid-start/islands";
 import { AnimeSeason } from "@tutkli/jikan-ts";
 import { sleep } from "../utils/helper";
-import './index.css';
+import '~/views/page-css/index.css';
 import { isServer } from "solid-js/web";
 
 export function routeData() {

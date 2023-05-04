@@ -1,52 +1,9 @@
-import { createEffect, createMemo, createSignal, For, Show, splitProps } from 'solid-js';
-import { JikanClient, JikanResponse, Anime, AnimeClient } from '@tutkli/jikan-ts';
-import { clientOnly } from 'solid-start/islands';
-import { unstable_clientOnly } from 'solid-start';
-import "./AnimeList.css";
+import { For, Show, splitProps } from 'solid-js';
 import { addAnimeToUserList, removeAnimeFromUserList } from '~/models/session';
 import { createServerAction$ } from 'solid-start/server';
-import { Form } from 'solid-start/data/Form';
-import { sleep } from '~/utils/helper';
+import "./AnimeList.css";
+import { AnimeShow } from '~/models/getAnimeData';
 
-export const getAnimeList = async <T extends keyof JikanClient>(objectName: T, methodName: keyof JikanClient[T], ...args: any[]) => {
-
-  const jikanClient = new JikanClient();
-  let response = {} as JikanResponse<Anime[]>;
-  const MAX_RETRIES = 10;
-
-  for (let i = 0; i < MAX_RETRIES; i++) {
-    try {
-      response = await (jikanClient[objectName][methodName] as (...args: any[]) => Promise<JikanResponse<Anime[]>>)(...args);
-      break;
-    } catch (error) {
-      console.log(`Request failed, retrying (${i + 1}/${MAX_RETRIES})...`);
-      await sleep(666 * (i + 1));
-    }
-  }
-  if (response.data === undefined) {
-    throw new Error(`Too many Requests, try again later`);
-  }
-  const data = response.data;
-  const theShows = data.map((anime: any) => {
-    return {
-      mal_id: anime.mal_id,
-      title: anime.title,
-      image_url: anime.images.webp.image_url,
-      score: anime.score,
-      members: anime.members,
-    } as AnimeShow;
-  });
-  return theShows;
-}
-
-export type AnimeShow = {
-  mal_id: number;
-  title: string;
-  score: number;
-  image_url: string;
-  rating?: string;
-  members?: number;
-};
 
 export default function AnimeList(props: any) {
   const [local, others] = splitProps(props, ['animeList', 'userList', 'isUserList', 'isRanked', 'reccomendations']);

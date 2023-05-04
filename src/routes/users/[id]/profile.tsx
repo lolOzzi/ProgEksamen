@@ -1,11 +1,12 @@
-import { useUser, useUserList } from "~/models/useUserData";
+import { useUser, useUserList } from "~/models/getUserData";
 import { useRouteData } from "solid-start";
-import AnimeList, { AnimeShow} from "~/views/AnimeList";
+import AnimeList from "~/views/AnimeList";
 import { createEffect, createMemo, createSignal, Resource, Show } from "solid-js";
 import { Anime, List } from ".prisma/client";
 import { Form } from "solid-start/data/Form";
 import { createServerAction$ } from "solid-start/server";
 import { logout } from "~/models/session";
+import { AnimeShow } from "~/models/getAnimeData";
 
 export function routeData() {
   return {list: useUserList(), user: useUser()};

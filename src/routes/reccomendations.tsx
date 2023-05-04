@@ -1,44 +1,12 @@
-import { useUser, useUserList } from "~/models/useUserData";
+import { useUser, useUserList } from "~/models/getUserData";
 import { useRouteData } from "solid-start";
-import AnimeList, { AnimeShow, getAnimeList } from "~/views/AnimeList";
-import { createEffect, createMemo, createSignal, Resource, Show } from "solid-js";
+import { AnimeShow, getReccomendations} from "~/models/getAnimeData";
+import AnimeList from "~/views/AnimeList";
 import { userAnimeList } from "~/routes/users/[id]/profile";
-import { JikanClient } from "@tutkli/jikan-ts";
-import { isServer } from "solid-js/web";
-import { sleep } from "~/utils/helper";
-import { BlockList } from "net";
+import { createMemo, createSignal, Show } from "solid-js";
 
 export function routeData() {
 	return { list: useUserList(), user: useUser() };
-}
-
-export const getReccomendations = async (id: number) => {
-	await new Promise(r => setTimeout(r, 333));
-	const jikan = new JikanClient();
-	let recc = [] as AnimeShow[];
-	const MAX_RETRIES = 10;
-
-	for (let i = 0; i < MAX_RETRIES; i++) {
-		try {
-			recc = (await jikan.anime.getAnimeRecommendations(id)).data.map((elem) => {
-				return {
-					mal_id: elem.entry.mal_id,
-					title: elem.entry.title,
-					image_url: elem.entry.images.webp?.image_url,
-					rating: ""
-				} as AnimeShow;
-			});
-			break;
-		} catch (error) {
-			console.log(`Request failed, retrying (${i + 1}/${MAX_RETRIES})...`);
-			await sleep(666 * (i + 1));
-		}
-	}
-	if (recc === undefined) {
-		throw new Error(`Too many Requests, try again later`);
-	}
-
-	return [recc[0], recc[1]];
 }
 
 export default function Home() {
@@ -72,7 +40,9 @@ export default function Home() {
 						}
 					});
 				}
-				if (Reccomendations.length >= 10) {
+				const tempReccomendations: AnimeShow[] = Reccomendations.filter((show, index, self) => index === self.findIndex((s) => (s.mal_id === show.mal_id)));
+				Reccomendations = tempReccomendations;
+				if (Reccomendations.length >= 15) {
 					break;
 				}
 			}
@@ -91,7 +61,7 @@ export default function Home() {
 			<div class="list-container">
 				<Show when={aniList()} fallback={<div><h2 style="font-size:1.5rem;">loading...</h2></div>}>
 					<Show when={aniList()?.length != 0} fallback={
-						<div><h2 style="font-size:1.5rem;">Try adding some anime with a rating above 7 first!</h2></div>
+						<div><h2 style="font-size:1.5rem;">Try adding some anime with a rating of 7 or above!</h2></div>
 					}>
 						<AnimeList animeList={aniList()} userList={userAniList()} reccomendations={true} />
 					</Show>

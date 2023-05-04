@@ -1,10 +1,9 @@
 import { createMemo, createResource, createSignal, onMount, ResourceActions, ResourceReturn } from "solid-js";
 import { refetchRouteData, useRouteData } from "solid-start";
-import { useUser, useUserList } from "../models/useUserData";
-import ListComp from "../views/AnimeList";
-import './basiclists.css';
-
-import { AnimeShow, getAnimeList } from '../views/AnimeList';
+import { useUser, useUserList } from "../models/getUserData";
+import AnimeList from "../views/AnimeList";
+import '~/views/page-css/basiclists.css';
+import { AnimeShow, getAnimeList } from '../models/getAnimeData';
 import { userAnimeList } from "./users/[id]/profile";
 
 
@@ -37,7 +36,7 @@ export default function Home() {
         <h1 class="list-title">Most Popular Anime</h1>
       </div>
       <div class="list-container">
-          <ListComp animeList={animeList()} userList={userAniList()} />
+          <AnimeList animeList={animeList()} userList={userAniList()} />
       </div>
     </main>
 

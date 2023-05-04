@@ -1,6 +1,6 @@
 import { createSignal, For, Signal } from "solid-js";
 import "./slider.css"
-import { AnimeShow } from "./AnimeList";
+import { AnimeShow } from "../models/getAnimeData";
 
 
 export default function Slider(props: { animeList?: AnimeShow[] }) {

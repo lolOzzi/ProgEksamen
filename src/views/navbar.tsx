@@ -1,6 +1,6 @@
 import "./navbar.css";
 import { createEffect, createSignal, Show, Signal } from 'solid-js';
-import { useUser } from "../models/useUserData";
+import { useUser } from "../models/getUserData";
 import { useLocation } from "solid-start";
 import { sleep } from "~/utils/helper";
 
@@ -24,7 +24,7 @@ export default function NavBar() {
                 <li><a href="/" class="logo-link"><img src="/images/logo.svg" width="250px" height="52" style="display:block;" /></a></li>
                 <li><a class="nav-link" href="/">Home</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropbtn">Anime</a>
+                    <a href="#" class="dropbtn nav-link">Anime</a>
                     <div class="dropdown-content">
                         <a href="/top">Top</a>
                         <a href="/popular">Popular</a>

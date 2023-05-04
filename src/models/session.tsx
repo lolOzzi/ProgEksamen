@@ -1,8 +1,8 @@
 import { PrismaClient } from "@prisma/client";
-import { Anime } from "@shineiichijo/marika";
 import { redirect } from "solid-start/server";
 import { createCookieSessionStorage } from "solid-start/session";
 import { db } from ".";
+
 type LoginForm = {
   username: string;
   password: string;
@@ -35,8 +35,6 @@ const sessionSecret = import.meta.env.SESSION_SECRET;
 const storage = createCookieSessionStorage({
   cookie: {
     name: "RJ_session",
-    // secure doesn't work on localhost for Safari
-    // https://web.dev/when-to-use-local-https/
     secure: true,
     secrets: ["hello"],
     sameSite: "lax",
@@ -132,8 +130,6 @@ export async function removeAnimeFromUserList(mal_id: number, request: Request) 
   });
   return anime; 
 }
-
-
 
 export async function logout(request: Request) {
   const session = await storage.getSession(request.headers.get("Cookie"));
