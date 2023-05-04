@@ -14,3 +14,8 @@ npm prisma migrate dev
 ```
 
 Nu skal man køre hjemmesiden ved enten kommandoen ```npm run dev```
+eller ved 
+```
+npm run build
+npm run start
+```
