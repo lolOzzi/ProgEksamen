@@ -5,12 +5,12 @@ For at køre programmet, skal man i en terminal navigere hen til mappen 'ProgEks
 Her skal du køre følgende kommandoer:
 
 ```
-'npm i'
+npm i
 ```
 ```
 //Disse 2 behøves muligvis ikke, men kør for en sikkerhedsskyld 
-'npm prisma generate'
-'npm prisma migrate dev'
+npm prisma generate
+npm prisma migrate dev
 ```
 
-Nu skal man køre hjemmesiden ved enten kommandoen 'npm run dev'.
+Nu skal man køre hjemmesiden ved enten kommandoen ```npm run dev```
