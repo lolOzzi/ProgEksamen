@@ -1,4 +1,4 @@
-"Programmerings eksamensprojekt 'Anime Nexus'
+#Programmerings eksamensprojekt 'Anime Nexus'
 
 For at køre programmet, skal man i en terminal navigere hen til mappen 'ProgEksamen', ved bare at enten clone eller downloade repositoriet.
 
