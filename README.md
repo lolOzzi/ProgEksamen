@@ -9,7 +9,7 @@ Her skal du køre følgende kommandoer:
 ```
 ```
 //Disse 2 behøves muligvis ikke, men kør for en sikkerhedsskyld 
-'npm prisma generate' og
+'npm prisma generate'
 'npm prisma migrate dev'
 ```
 
