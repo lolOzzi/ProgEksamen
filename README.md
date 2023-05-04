@@ -9,8 +9,8 @@ npm i
 ```
 Muligvis unødvendige, men kør følgende:
 ```
-npm prisma generate
-npm prisma migrate dev
+npx prisma generate
+npx prisma migrate dev
 ```
 
 Nu skal man køre hjemmesiden ved enten kommandoen ```npm run dev```
