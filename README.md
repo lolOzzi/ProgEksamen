@@ -4,7 +4,9 @@ For at køre programmet, skal man i en terminal navigere hen til mappen 'ProgEks
 
 Her skal du køre følgende kommandoer:
 'npm i'
-//De sidste 2 behøves muligvis ikke, men kør for en sikkerhedsskyld
+
+//De sidste 2 behøves muligvis ikke, men kør for en sikkerhedsskyld 
+
 'npm prisma generate'
 'npm prisma migrate dev'
 
