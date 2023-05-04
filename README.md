@@ -7,7 +7,7 @@ Her skal du køre følgende kommandoer:
 ```
 npm i
 ```
-Disse 2 muligvis unødvendige, men kør følgende
+Muligvis unødvendige, men kør følgende:
 ```
 npm prisma generate
 npm prisma migrate dev
