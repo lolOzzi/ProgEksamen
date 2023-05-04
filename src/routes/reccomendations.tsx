@@ -4,6 +4,7 @@ import { AnimeShow, getReccomendations} from "~/models/getAnimeData";
 import AnimeList from "~/views/AnimeList";
 import { userAnimeList } from "~/routes/users/[id]/profile";
 import { createMemo, createSignal, Show } from "solid-js";
+import { isServer } from "solid-js/web";
 
 export function routeData() {
 	return { list: useUserList(), user: useUser() };
@@ -26,7 +27,7 @@ export default function Home() {
 		}
 		const data = userAniList();
 
-		if (data?.length !== 0 && data !== undefined) {
+		if (data?.length !== 0 && data !== undefined && !isServer) {
 			Reccomendations = [];
 			
 			for (let i = 0; i < data.length; i++) {
