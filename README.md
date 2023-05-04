@@ -2,6 +2,11 @@ Programmerings eksamensprojekt 'Anime Nexus'
 
 For at køre programmet, skal man i en terminal navigere hen til mappen 'ProgEksamen', ved bare at enten clone eller downloade repositoriet.
 
-Derefter skal man skrive kommandoen 'npm install' eller 'npm i'.
+Her skal du køre følgende kommandoer:
+'npm i'
+//De sidste 2 behøves muligvis ikke, men kør for en sikkerhedsskyld
+'npm prisma generate'
+'npm prisma migrate dev'
+
 
 Nu skal man køre hjemmesiden ved enten kommandoen 'npm run dev'.
